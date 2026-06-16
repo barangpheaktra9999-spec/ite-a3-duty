@@ -99,7 +99,7 @@
     </div>
     <div class="glass rounded-2xl p-5">
       <h3 class="font-bold text-lg md:text-xl mb-2">👨‍🎓 ស្វែងរកឈ្មោះនិស្សិត</h3>
-      <input id="studentSearch" placeholder="ឧទាហរណ៍៖ Barang Pheaktra" class="text-black p-2.5 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+      <input id="studentSearch" placeholder="ឧទាហរណ៍៖ បារាំង ភក្ត្រា" class="text-black p-2.5 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
       <p id="studentResult" class="mt-3 text-sm md:text-base font-medium bg-white/5 p-2 rounded-lg hidden"></p>
     </div>
   </div>
@@ -118,12 +118,33 @@
 <script>
 // === ប្អូនអាចដូរឈ្មោះនិស្សិតនៅក្នុង Array នេះបាន (ដូរពី Student 1 ទៅឈ្មោះមិត្តភក្តិ) ===
 const students = [
-  "Sok San",
-  "Chan Thavy",
-  "Keo Boran",
-  "Nguon Pich",
-  "Meas Rotha",
-  "Barang Pheaktra" 
+  "ទន់ វីរៈ",
+  "ទិតថា រាជ្យបណ្ឌិត",
+  "ទុយ សាមាស",
+  "ទុយ តុង",
+  "ទុយ សុខលាភ",
+  "ទ្រី សេរីវិជ្ជា" ,
+  "នន សុធារិទ្ធិ",
+  "នាង អេនហ្គេល",
+  "នី គីមឃាង",
+  "នុត ចំរើន",
+  "នូ ជាសំណាង",
+  "ប៉ាន ជតពិសិដ្ឋ",
+  "ប៉ែន សំណាង",
+  "ប៊ី ជុងសេង",
+  "ប៊ុណ្ណា ដាវីដ",
+  "ប៊ូ ហង្សបូរី",
+  "ប៊ួរ សុវណ្ណសិលា",
+  "ប៊េ សុងហ័រ",
+  "បាន ប៊ុនយ៉ាន",
+  "បាន សុងជូ",
+  "បារាំង​ ភក្ត្រា",
+  "ប្រាក់ ខេមា",
+  "ប្រាក់ បញ្ញា",
+  "ផន គ្រឹស្នា",
+  "ផល មង្គល",
+  "ផាង បញ្ញា",
+  "ផាត់ យិនប៉"
 ];
 
 // កាលបរិច្ឆេទចាប់ផ្ដើមគណនា (ជៀសវាង Timezone bug តាមរយៈការបង្កើត Local Date)
@@ -212,7 +233,7 @@ studentSearch.oninput = e => {
   let s = e.target.value.trim();
   if (!s) { studentResult.classList.add('hidden'); return; }
   studentResult.classList.remove('hidden');
-  let found = "រកមិនឃើញវេនប្រចាំការទេ";
+  let found = "រកមិនឃើញឈ្មោះនេះទេ! សូមប្រាកដថាអ្នកវាយបញ្ចូលបានត្រឹមត្រូវ";
   
   // ស្វែងរកក្នុងកំឡុងពេល ៩០ ថ្ងៃទៅមុខ
   for (let i = 0; i < 90; i++) {
