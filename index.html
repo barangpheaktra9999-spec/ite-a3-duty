@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITE A3 - វេនយកស្លាយ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Kantumruy Pro', sans-serif;
+      background: 
+        linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+        url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjXxGArgP0d4MOf1uHAzVD2CkwE7Oyv2NdKa1m5s3gqO3GfGiV8v1e5BwobjNX60kbclIla3MK2OwuiaxQ0klZ-vZfSCzfHZd7-GIbG4MuL6f6CY7BT6wP3QQ-SXyypGHsmUCrmBPqV4n7v/s1600/Untitled.png');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        background: 
+          linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
+          url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThyoJ9SbtSQALOAYdcuVa2ig_7Fx2zffIX73_lTfZBnZI9ADetGWjq0b-9&s=10');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+      }
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: background 0.3s, border 0.3s;
+    }
+
+    body.darkmode {
+      color: #e2e8f0;
+      background-image: 
+        linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)),
+        url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjXxGArgP0d4MOf1uHAzVD2CkwE7Oyv2NdKa1m5s3gqO3GfGiV8v1e5BwobjNX60kbclIla3MK2OwuiaxQ0klZ-vZfSCzfHZd7-GIbG4MuL6f6CY7BT6wP3QQ-SXyypGHsmUCrmBPqV4n7v/s1600/Untitled.png');
+    }
+
+    @media (max-width: 768px) {
+      body.darkmode {
+        background-image: 
+          linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)),
+          url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThyoJ9SbtSQALOAYdcuVa2ig_7Fx2zffIX73_lTfZBnZI9ADetGWjq0b-9&s=10');
+      }
+    }
+
+    body.darkmode .glass {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="text-white p-4 min-h-screen">
+<div class="max-w-6xl mx-auto">
+  
+  <div class="text-center mb-6">
+    <img src="https://www.rupp.edu.kh/assets/logo.svg" class="w-20 md:w-24 mx-auto mb-3" alt="RUPP Logo">
+    <h1 class="text-3xl md:text-5xl font-bold tracking-tight">វេនយកស្លាយ ថ្នាក់A3</h1>
+    <p class="text-sm md:text-base opacity-90">Royal University of Phnom Penh</p>
+    <button onclick="document.body.classList.toggle('darkmode')" class="mt-3 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 transition active:scale-95 text-sm font-medium shadow-lg">🌙 Dark/Light</button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="glass rounded-2xl p-5 flex flex-col justify-between">
+      <h3 class="font-bold text-lg md:text-xl mb-1">🕒 ម៉ោងបច្ចុប្បន្ន</h3>
+      <div id="clock" class="text-xl md:text-2xl font-semibold text-indigo-300"></div>
+    </div>
+    <div class="glass rounded-2xl p-5 flex flex-col justify-between">
+      <h3 class="font-bold text-lg md:text-xl mb-1">⭐ វេនប្រចាំការថ្ងៃនេះ</h3>
+      <div id="todayDuty" class="text-base md:text-lg"></div>
+    </div>
+    <div class="glass rounded-2xl p-5 flex flex-col justify-between">
+      <h3 class="font-bold text-lg md:text-xl mb-1">📊 ស្ថិតិរួម</h3>
+      <div>
+        <p class="text-sm md:text-base">និស្សិតសរុប: 58 នាក់</p>
+        <p id="teamNo" class="text-sm md:text-base font-medium text-emerald-400"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass rounded-2xl p-5 mt-4">
+    <h3 class="font-bold text-lg md:text-xl mb-3">📅 វេនប្រចាំការ ៧ ថ្ងៃបន្ទាប់</h3>
+    <ul id="upcoming" class="space-y-2 text-sm md:text-base divide-y divide-white/10"></ul>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+    <div class="glass rounded-2xl p-5">
+      <h3 class="font-bold text-lg md:text-xl mb-2">🔎 ស្វែងរកតាមកាលបរិច្ឆេទ</h3>
+      <input type="date" id="datePick" class="text-black p-2.5 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+      <p id="dateResult" class="mt-3 text-sm md:text-base font-medium bg-white/5 p-2 rounded-lg hidden"></p>
+    </div>
+    <div class="glass rounded-2xl p-5">
+      <h3 class="font-bold text-lg md:text-xl mb-2">👨‍🎓 ស្វែងរកឈ្មោះនិស្សិត</h3>
+      <input id="studentSearch" placeholder="ឧទាហរណ៍៖ Student 1" class="text-black p-2.5 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+      <p id="studentResult" class="mt-3 text-sm md:text-base font-medium bg-white/5 p-2 rounded-lg hidden"></p>
+    </div>
+  </div>
+
+  <div class="glass rounded-2xl p-5 mt-4 overflow-x-auto">
+    <h3 class="font-bold text-lg md:text-xl mb-3">📆 ប្រតិទិនប្រចាំខែនេះ</h3>
+    <div class="min-w-[300px]">
+      <div class="grid grid-cols-7 gap-1 text-center font-bold text-xs md:text-sm mb-2 text-indigo-300">
+        <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+      </div>
+      <div id="calendar"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// === ប្អូនអាចដូរឈ្មោះនិស្សិតនៅក្នុង Array នេះបាន (ដូរពី Student 1 ទៅឈ្មោះមិត្តភក្តិ) ===
+const students = Array.from({length: 58}, (_, i) => "Student " + (i + 1));
+
+// កាលបរិច្ឆេទចាប់ផ្ដើមគណនា (ជៀសវាង Timezone bug តាមរយៈការបង្កើត Local Date)
+const START_DATE = new Date(2024, 0, 1); 
+
+function workingDaysUntil(targetDate) {
+  // បង្កើតច្បាប់ចម្លង Date ដើម្បីកុំឱ្យប៉ះពាល់ដល់ Date ដើម
+  let start = new Date(START_DATE.getTime());
+  let end = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+  let count = 0;
+  
+  while (start <= end) {
+    if (start.getDay() !== 0) { // មិនមែនថ្ងៃអាទិត្យ (0 = Sunday)
+      count++;
+    }
+    start.setDate(start.getDate() + 1);
+  }
+  return count;
+}
+
+function getDuty(date) {
+  if (date.getDay() === 0) return "សម្រាក (ថ្ងៃអាទិត្យ)";
+  let wd = workingDaysUntil(date);
+  if (wd === 0) return "មិនទាន់មានទិន្នន័យ";
+  
+  // ម្នាក់កាន់វេន ២ ថ្ងៃជាប់គ្នា ដូច្នេះយករង្វិលជុំ (wd - 1) គុណនឹង ២
+  let idx = ((wd - 1) * 2) % students.length;
+  let companionIdx = (idx + 1) % students.length;
+  
+  return students[idx] + " & " + students[companionIdx];
+}
+
+function teamNumber(date) {
+  let wd = workingDaysUntil(date);
+  return wd;
+}
+
+function fmt(d) {
+  return d.toLocaleDateString('kh-KH', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+// ទាញយក Elements
+const clock = document.getElementById('clock');
+const todayDuty = document.getElementById('todayDuty');
+const teamNo = document.getElementById('teamNo');
+const upcoming = document.getElementById('upcoming');
+const datePick = document.getElementById('datePick');
+const dateResult = document.getElementById('dateResult');
+const studentSearch = document.getElementById('studentSearch');
+const studentResult = document.getElementById('studentResult');
+const calendar = document.getElementById('calendar');
+
+function update() {
+  let now = new Date();
+  clock.innerHTML = now.toLocaleTimeString();
+  todayDuty.innerHTML = "<b class='text-emerald-400'>" + getDuty(now) + "</b>";
+  if(now.getDay() !== 0) {
+    teamNo.textContent = "លំដាប់ថ្ងៃវេនទី: " + teamNumber(now);
+  } else {
+    teamNo.textContent = "ថ្ងៃនេះថ្ងៃសម្រាក";
+  }
+}
+setInterval(update, 1000); 
+update();
+
+// បង្ហាញ ៧ ថ្ងៃបន្ទាប់
+upcoming.innerHTML = "";
+for (let i = 1; i <= 7; i++) {
+  let d = new Date(); 
+  d.setDate(d.getDate() + i);
+  upcoming.innerHTML += `<li class="pt-2 flex justify-between items-center text-xs md:text-sm"><span>${fmt(d)}</span> <span class="font-medium text-indigo-200">➜ ${getDuty(d)}</span></li>`;
+}
+
+// ស្វែងរកតាមថ្ងៃ
+datePick.onchange = e => {
+  if (!e.target.value) return;
+  // បង្កើត Date ចេញពី Input ឱ្យត្រូវនឹង Local Timezone
+  let parts = e.target.value.split('-');
+  let d = new Date(parts[0], parts[1] - 1, parts[2]);
+  dateResult.classList.remove('hidden');
+  dateResult.innerHTML = `លទ្ធផល៖ <span class="text-emerald-400 font-semibold">${getDuty(d)}</span>`;
+}
+
+// ស្វែងរកតាមឈ្មោះនិស្សិត
+studentSearch.oninput = e => {
+  let s = e.target.value.trim();
+  if (!s) { studentResult.classList.add('hidden'); return; }
+  studentResult.classList.remove('hidden');
+  let found = "រកមិនឃើញវេនប្រចាំការទេ";
+  
+  // ស្វែងរកក្នុងកំឡុងពេល ៩០ ថ្ងៃទៅមុខ
+  for (let i = 0; i < 90; i++) {
+    let d = new Date(); 
+    d.setDate(d.getDate() + i);
+    let duty = getDuty(d);
+    if (duty.toLowerCase().includes(s.toLowerCase())) { 
+      found = `វេនបន្ទាប់៖ <span class='text-emerald-400 font-semibold'>${fmt(d)}</span>`; 
+      break; 
+    }
+  }
+  studentResult.innerHTML = found;
+}
+
+function renderCalendar() {
+  let d = new Date();
+  let y = d.getFullYear(), m = d.getMonth();
+  let firstDay = new Date(y, m, 1).getDay();
+  // រៀបចំថ្ងៃចន្ទជាថ្ងៃដំបូងនៃសប្ដាហ៍នៅក្នុង Grid
+  let adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
+  let days = new Date(y, m + 1, 0).getDate();
+  
+  let html = "<div class='grid grid-cols-7 gap-1'>";
+  
+  for (let j = 0; j < adjustedFirstDay; j++) {
+    html += `<div class='p-1 md:p-2 rounded bg-transparent'></div>`;
+  }
+  
+  for (let i = 1; i <= days; i++) {
+    let currentCheck = new Date(y, m, i);
+    let isSunday = currentCheck.getDay() === 0;
+    
+    // បន្លិចពណ៌ថ្ងៃនេះ (Today Highlight)
+    let isToday = currentCheck.toDateString() === d.toDateString();
+    
+    let bgClass = isSunday ? 'bg-red-500/20 text-red-300' : 'bg-white/10 hover:bg-white/20';
+    if (isToday) bgClass = 'bg-indigo-600 font-bold border-2 border-white';
+    
+    html += `<div class='border border-white/5 p-1 md:p-2 text-center rounded text-xs md:text-sm ${bgClass} transition cursor-pointer' title="${getDuty(currentCheck)}">${i}</div>`;
+  }
+  html += "</div>";
+  calendar.innerHTML = html;
+}
+renderCalendar();
+</script>
+</body>
+</html>
