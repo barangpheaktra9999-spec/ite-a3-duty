@@ -74,13 +74,13 @@
       <div id="clock" class="text-xl md:text-2xl font-semibold text-indigo-300"></div>
     </div>
     <div class="glass rounded-2xl p-5 flex flex-col justify-between">
-      <h3 class="font-bold text-lg md:text-xl mb-1">⭐ វេនប្រចាំការថ្ងៃនេះ</h3>
+      <h3 class="font-bold text-lg md:text-xl mb-1">⭐ វេនយកស្លាយ</h3>
       <div id="todayDuty" class="text-base md:text-lg"></div>
     </div>
     <div class="glass rounded-2xl p-5 flex flex-col justify-between">
       <h3 class="font-bold text-lg md:text-xl mb-1">📊 ស្ថិតិរួម</h3>
       <div>
-        <p class="text-sm md:text-base">និស្សិតសរុប: 58 នាក់</p>
+        <p class="text-sm md:text-base">និស្សិតសរុប: 27 នាក់</p>
         <p id="teamNo" class="text-sm md:text-base font-medium text-emerald-400"></p>
       </div>
     </div>
@@ -116,48 +116,28 @@
 </div>
 
 <script>
-// === ប្អូនអាចដូរឈ្មោះនិស្សិតនៅក្នុង Array នេះបាន (ដូរពី Student 1 ទៅឈ្មោះមិត្តភក្តិ) ===
+// បញ្ជីឈ្មោះនិស្សិត (២៧ នាក់)
 const students = [
-  "ទន់ វីរៈ",
-  "ទិតថា រាជ្យបណ្ឌិត",
-  "ទុយ សាមាស",
-  "ទុយ តុង",
-  "ទុយ សុខលាភ",
-  "ទ្រី សេរីវិជ្ជា" ,
-  "នន សុធារិទ្ធិ",
-  "នាង អេនហ្គេល",
-  "នី គីមឃាង",
-  "នុត ចំរើន",
-  "នូ ជាសំណាង",
-  "ប៉ាន ជតពិសិដ្ឋ",
-  "ប៉ែន សំណាង",
-  "ប៊ី ជុងសេង",
-  "ប៊ុណ្ណា ដាវីដ",
-  "ប៊ូ ហង្សបូរី",
-  "ប៊ួរ សុវណ្ណសិលា",
-  "ប៊េ សុងហ័រ",
-  "បាន ប៊ុនយ៉ាន",
-  "បាន សុងជូ",
-  "បារាំង​ ភក្ត្រា",
-  "ប្រាក់ ខេមា",
-  "ប្រាក់ បញ្ញា",
-  "ផន គ្រឹស្នា",
-  "ផល មង្គល",
-  "ផាង បញ្ញា",
-  "ផាត់ យិនប៉"
+  "ទន់ វីរៈ", "ទិតថា រាជ្យបណ្ឌិត", "ទុយ សាមាស", "ទុយ តុង", "ទុយ សុខលាភ",
+  "ទ្រី សេរីវិជ្ជា", "នន សុធារិទ្ធិ", "នាង អេនហ្គេល", "នី គីមឃាង", "នុត ចំរើន",
+  "នូ ជាសំណាង", "ប៉ាន ជតពិសិដ្ឋ", "ប៉ែន សំណាង", "ប៊ី ជុងសេង", "ប៊ុណ្ណា ដាវីដ",
+  "ប៊ូ ហង្សបូរី", "ប៊ួរ សុវណ្ណសិលា", "ប៊េ សុងហ័រ", "បាន ប៊ុនយ៉ាន", "បាន សុងជូ",
+  "បារាំង​ ភក្ត្រា", "ប្រាក់ ខេមា", "ប្រាក់ បញ្ញា", "ផន គ្រឹស្នា", "ផល មង្គល",
+  "ផាង បញ្ញា", "ផាត់ យិនប៉"
 ];
 
-// កាលបរិច្ឆេទចាប់ផ្ដើមគណនា (ជៀសវាង Timezone bug តាមរយៈការបង្កើត Local Date)
-const START_DATE = new Date(2024, 0, 1); 
+// កំណត់កាលបរិច្ឆេទចាប់ផ្ដើមរាប់ពីថ្ងៃទី ១ ខែមិថុនា ឆ្នាំ ២០២៦ ឡើងវិញ
+const START_DATE = new Date(2026, 5, 1); 
 
 function workingDaysUntil(targetDate) {
-  // បង្កើតច្បាប់ចម្លង Date ដើម្បីកុំឱ្យប៉ះពាល់ដល់ Date ដើម
   let start = new Date(START_DATE.getTime());
   let end = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
-  let count = 0;
   
+  if (end < start) return 0; // បើជារើសថ្ងៃថយក្រោយមុនថ្ងៃទី ១ មិថុនា
+  
+  let count = 0;
   while (start <= end) {
-    if (start.getDay() !== 0) { // មិនមែនថ្ងៃអាទិត្យ (0 = Sunday)
+    if (start.getDay() !== 0) { // មិនរាប់ថ្ងៃអាទិត្យ
       count++;
     }
     start.setDate(start.getDate() + 1);
@@ -170,23 +150,23 @@ function getDuty(date) {
   let wd = workingDaysUntil(date);
   if (wd === 0) return "មិនទាន់មានទិន្នន័យ";
   
-  // ម្នាក់កាន់វេន ២ ថ្ងៃជាប់គ្នា ដូច្នេះយករង្វិលជុំ (wd - 1) គុណនឹង ២
-  let idx = ((wd - 1) * 2) % students.length;
+  // ម្នាក់ៗកាន់វេន ២ ថ្ងៃជាប់គ្នា៖ (wd - 1) ចែកនឹង ២ រួចមូលមកក្រោម
+  let currentGroupIndex = Math.floor((wd - 1) / 2);
+  
+  let idx = (currentGroupIndex * 2) % students.length;
   let companionIdx = (idx + 1) % students.length;
   
   return students[idx] + " & " + students[companionIdx];
 }
 
 function teamNumber(date) {
-  let wd = workingDaysUntil(date);
-  return wd;
+  return workingDaysUntil(date);
 }
 
 function fmt(d) {
   return d.toLocaleDateString('kh-KH', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
 }
 
-// ទាញយក Elements
 const clock = document.getElementById('clock');
 const todayDuty = document.getElementById('todayDuty');
 const teamNo = document.getElementById('teamNo');
@@ -201,7 +181,7 @@ function update() {
   let now = new Date();
   clock.innerHTML = now.toLocaleTimeString();
   todayDuty.innerHTML = "<b class='text-emerald-400'>" + getDuty(now) + "</b>";
-  if(now.getDay() !== 0) {
+  if(now.getDay() !== 0 && workingDaysUntil(now) > 0) {
     teamNo.textContent = "លំដាប់ថ្ងៃវេនទី: " + teamNumber(now);
   } else {
     teamNo.textContent = "ថ្ងៃនេះថ្ងៃសម្រាក";
@@ -221,7 +201,6 @@ for (let i = 1; i <= 7; i++) {
 // ស្វែងរកតាមថ្ងៃ
 datePick.onchange = e => {
   if (!e.target.value) return;
-  // បង្កើត Date ចេញពី Input ឱ្យត្រូវនឹង Local Timezone
   let parts = e.target.value.split('-');
   let d = new Date(parts[0], parts[1] - 1, parts[2]);
   dateResult.classList.remove('hidden');
@@ -235,7 +214,6 @@ studentSearch.oninput = e => {
   studentResult.classList.remove('hidden');
   let found = "រកមិនឃើញឈ្មោះនេះទេ! សូមប្រាកដថាអ្នកវាយបញ្ចូលបានត្រឹមត្រូវ";
   
-  // ស្វែងរកក្នុងកំឡុងពេល ៩០ ថ្ងៃទៅមុខ
   for (let i = 0; i < 90; i++) {
     let d = new Date(); 
     d.setDate(d.getDate() + i);
@@ -252,7 +230,6 @@ function renderCalendar() {
   let d = new Date();
   let y = d.getFullYear(), m = d.getMonth();
   let firstDay = new Date(y, m, 1).getDay();
-  // រៀបចំថ្ងៃចន្ទជាថ្ងៃដំបូងនៃសប្ដាហ៍នៅក្នុង Grid
   let adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
   let days = new Date(y, m + 1, 0).getDate();
   
@@ -265,8 +242,6 @@ function renderCalendar() {
   for (let i = 1; i <= days; i++) {
     let currentCheck = new Date(y, m, i);
     let isSunday = currentCheck.getDay() === 0;
-    
-    // បន្លិចពណ៌ថ្ងៃនេះ (Today Highlight)
     let isToday = currentCheck.toDateString() === d.toDateString();
     
     let bgClass = isSunday ? 'bg-red-500/20 text-red-300' : 'bg-white/10 hover:bg-white/20';
