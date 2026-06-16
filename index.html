@@ -74,7 +74,7 @@
       <div id="clock" class="text-xl md:text-2xl font-semibold text-indigo-300"></div>
     </div>
     <div class="glass rounded-2xl p-5 flex flex-col justify-between">
-      <h3 class="font-bold text-lg md:text-xl mb-1">⭐ វេនយកស្លាយ</h3>
+      <h3 class="font-bold text-lg md:text-xl mb-1">⭐ វេនយកស្លាយថ្ងៃនេះ</h3>
       <div id="todayDuty" class="text-base md:text-lg"></div>
     </div>
     <div class="glass rounded-2xl p-5 flex flex-col justify-between">
@@ -126,14 +126,14 @@ const students = [
   "ផាង បញ្ញា", "ផាត់ យិនប៉"
 ];
 
-// កំណត់កាលបរិច្ឆេទចាប់ផ្ដើមរាប់ពីថ្ងៃទី ១ ខែមិថុនា ឆ្នាំ ២០២៦ ឡើងវិញ
+// ចាប់ផ្ដើមរាប់ឡើងវិញពីថ្ងៃទី ១ ខែមិថុនា ឆ្នាំ ២០២៦
 const START_DATE = new Date(2026, 5, 1); 
 
 function workingDaysUntil(targetDate) {
   let start = new Date(START_DATE.getTime());
   let end = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
   
-  if (end < start) return 0; // បើជារើសថ្ងៃថយក្រោយមុនថ្ងៃទី ១ មិថុនា
+  if (end < start) return 0; 
   
   let count = 0;
   while (start <= end) {
@@ -150,10 +150,8 @@ function getDuty(date) {
   let wd = workingDaysUntil(date);
   if (wd === 0) return "មិនទាន់មានទិន្នន័យ";
   
-  // ម្នាក់ៗកាន់វេន ២ ថ្ងៃជាប់គ្នា៖ (wd - 1) ចែកនឹង ២ រួចមូលមកក្រោម
-  let currentGroupIndex = Math.floor((wd - 1) / 2);
-  
-  let idx = (currentGroupIndex * 2) % students.length;
+  // រូបមន្តថ្មី៖ គុណនឹង ២ ដើម្បីឱ្យដូរ ២ នាក់ថ្មីរាល់ថ្ងៃតែម្ដង
+  let idx = ((wd - 1) * 2) % students.length;
   let companionIdx = (idx + 1) % students.length;
   
   return students[idx] + " & " + students[companionIdx];
