@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — ITE A3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Kantumruy Pro', sans-serif;
+      background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
+        url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjXxGArgP0d4MOf1uHAzVD2CkwE7Oyv2NdKa1m5s3gqO3GfGiV8v1e5BwobjNX60kbclIla3MK2OwuiaxQ0klZ-vZfSCzfHZd7-GIbG4MuL6f6CY7BT6wP3QQ-SXyypGHsmUCrmBPqV4n7v/s1600/Untitled.png');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      min-height: 100vh;
+      color: white;
+    }
+    .glass {
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    /* Login */
+    #loginScreen {
+      position: fixed; inset: 0; z-index: 999;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+    }
+    .login-box {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+      width: 340px;
+      text-align: center;
+    }
+    .login-box h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .login-box p { font-size: 0.8rem; opacity: 0.7; margin-bottom: 1.5rem; }
+    .login-box input {
+      width: 100%; padding: 10px 14px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.1); color: white;
+      font-size: 0.9rem; margin-bottom: 10px; outline: none;
+      font-family: 'Kantumruy Pro', sans-serif;
+    }
+    .login-box input::placeholder { color: rgba(255,255,255,0.5); }
+    .login-box button {
+      width: 100%; padding: 10px; border-radius: 12px;
+      background: linear-gradient(to right, #6366f1, #8b5cf6);
+      border: none; color: white; font-weight: 700;
+      font-size: 0.9rem; cursor: pointer; transition: opacity 0.2s;
+      font-family: 'Kantumruy Pro', sans-serif;
+    }
+    .login-box button:hover { opacity: 0.85; }
+    .login-error { color: #f87171; font-size: 0.8rem; margin-top: 8px; display: none; }
+    /* Tabs */
+    .tab-btn {
+      padding: 8px 16px; border-radius: 10px; font-size: 0.82rem;
+      background: transparent; border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.7); cursor: pointer; transition: all 0.2s;
+      font-family: 'Kantumruy Pro', sans-serif;
+    }
+    .tab-btn.active { background: rgba(99,102,241,0.6); border-color: #6366f1; color: white; }
+    .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.1); color: white; }
+    /* Cards */
+    .stat-card {
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px; padding: 1.2rem;
+    }
+    .stat-label { font-size: 0.78rem; opacity: 0.7; margin-bottom: 6px; }
+    .stat-val { font-size: 1.8rem; font-weight: 700; }
+    .stat-sub { font-size: 0.72rem; opacity: 0.6; margin-top: 4px; }
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th { text-align: left; padding: 8px 10px; opacity: 0.6; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    td { padding: 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    tr:last-child td { border-bottom: none; }
+    /* Badge */
+    .badge-done { background: rgba(16,185,129,0.2); color: #6ee7b7; font-size: 0.72rem; padding: 2px 10px; border-radius: 20px; border: 1px solid rgba(16,185,129,0.3); }
+    .badge-pending { background: rgba(245,158,11,0.2); color: #fcd34d; font-size: 0.72rem; padding: 2px 10px; border-radius: 20px; border: 1px solid rgba(245,158,11,0.3); }
+    /* Input */
+    .admin-input {
+      padding: 9px 14px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1); color: white;
+      font-size: 0.82rem; outline: none; width: 100%;
+      font-family: 'Kantumruy Pro', sans-serif;
+    }
+    .admin-input::placeholder { color: rgba(255,255,255,0.4); }
+    .admin-input:focus { border-color: #6366f1; }
+    textarea.admin-input { resize: vertical; min-height: 90px; }
+    /* Buttons */
+    .btn-primary {
+      padding: 9px 18px; border-radius: 12px;
+      background: linear-gradient(to right, #6366f1, #8b5cf6);
+      border: none; color: white; font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s;
+      font-family: 'Kantumruy Pro', sans-serif;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-sm {
+      padding: 5px 12px; border-radius: 8px; font-size: 0.75rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08); color: white;
+      cursor: pointer; transition: all 0.2s;
+      font-family: 'Kantumruy Pro', sans-serif;
+    }
+    .btn-sm:hover { background: rgba(255,255,255,0.15); }
+    .btn-danger { border-color: rgba(239,68,68,0.4); color: #f87171; }
+    .btn-success { border-color: rgba(16,185,129,0.4); color: #6ee7b7; }
+    .btn-tg { background: #2481cc; border: none; color: white; padding: 9px 18px; border-radius: 12px; font-size: 0.82rem; font-weight: 600; cursor: pointer; font-family: 'Kantumruy Pro', sans-serif; }
+    .btn-tg:hover { background: #1a6aaa; }
+    /* Bar */
+    .bar-track { height: 7px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 4px; }
+    /* Swap item */
+    .swap-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; gap: 8px; }
+    .swap-item:last-child { border-bottom: none; }
+    /* Avatar */
+    .avatar { width: 30px; height: 30px; border-radius: 50%; background: rgba(99,102,241,0.3); border: 1px solid rgba(99,102,241,0.5); display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+    /* Msg history */
+    .msg-hist-item { background: rgba(255,255,255,0.07); border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; }
+    .section { display: none; }
+    .section.active { display: block; }
+    /* Notification Toast */
+    #toast { position: fixed; bottom: 20px; right: 20px; background: rgba(16,185,129,0.9); color: white; padding: 10px 20px; border-radius: 12px; font-size: 0.82rem; transform: translateY(100px); transition: transform 0.3s; z-index: 9999; }
+    #toast.show { transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ======= LOGIN ======= -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔐</div>
+    <h2>Admin Dashboard</h2>
+    <p>ITE A3 — Slide Duty Management</p>
+    <input type="text" id="loginUser" placeholder="Username" />
+    <input type="password" id="loginPass" placeholder="Password" />
+    <button onclick="doLogin()">ចូលប្រើប្រាស់</button>
+    <div class="login-error" id="loginError">❌ Username ឬ Password មិនត្រូវ!</div>
+    <p style="font-size:0.72rem; opacity:0.4; margin-top:12px;">Default: admin / admin123</p>
+  </div>
+</div>
+
+<!-- ======= TOAST ======= -->
+<div id="toast"></div>
+
+<!-- ======= MAIN ======= -->
+<div id="mainApp" style="display:none;">
+  <div class="max-w-6xl mx-auto px-4 py-6">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+      <div>
+        <h1 class="text-2xl font-bold flex items-center gap-2">
+          <i class="ti ti-layout-dashboard" style="font-size:26px;"></i>
+          Admin Dashboard — ITE A3
+        </h1>
+        <p id="dateNow" class="text-xs opacity-60 mt-1"></p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs bg-indigo-600/50 border border-indigo-400/50 px-3 py-1 rounded-full">
+          <i class="ti ti-shield-check"></i> Admin
+        </span>
+        <button onclick="doLogout()" class="btn-sm btn-danger">
+          <i class="ti ti-logout" style="font-size:13px; vertical-align:-2px;"></i> ចេញ
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div class="stat-card">
+        <div class="stat-label"><i class="ti ti-users"></i> និស្សិតសរុប</div>
+        <div class="stat-val">40</div>
+        <div class="stat-sub">ITE A3 — ២ នាក់/ថ្ងៃ</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="ti ti-calendar-check"></i> វេនថ្ងៃនេះ</div>
+        <div class="stat-val" id="todayNum">—</div>
+        <div class="stat-sub" id="todayPair" style="font-size:0.7rem;"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="ti ti-check"></i> ថ្ងៃបានបញ្ជាក់</div>
+        <div class="stat-val" id="doneCount">0</div>
+        <div class="stat-sub">ប្រើ localStorage</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="ti ti-repeat"></i> ស្នើដូរវេន</div>
+        <div class="stat-val" id="swapCount">2</div>
+        <div class="stat-sub">កំពុងចាំ</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex gap-2 mb-5 flex-wrap">
+      <button class="tab-btn active" onclick="showTab('overview',this)">
+        <i class="ti ti-list"></i> ទិដ្ឋភាព
+      </button>
+      <button class="tab-btn" onclick="showTab('students',this)">
+        <i class="ti ti-users"></i> និស្សិត
+      </button>
+      <button class="tab-btn" onclick="showTab('swap',this)">
+        <i class="ti ti-repeat"></i> ដូរវេន
+      </button>
+      <button class="tab-btn" onclick="showTab('notify',this)">
+        <i class="ti ti-send"></i> ផ្ញើ Telegram
+      </button>
+    </div>
+
+    <!-- ======= OVERVIEW ======= -->
+    <div id="tab-overview" class="section active">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="glass rounded-2xl p-5">
+          <h3 class="font-bold mb-3 text-sm flex items-center gap-2">
+            <i class="ti ti-calendar-week"></i> ៧ ថ្ងៃបន្ទាប់
+          </h3>
+          <table>
+            <thead><tr><th>ថ្ងៃ</th><th>គូវេន</th><th>ស្ថានភាព</th></tr></thead>
+            <tbody id="upcomingTable"></tbody>
+          </table>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <h3 class="font-bold mb-3 text-sm flex items-center gap-2">
+            <i class="ti ti-chart-bar"></i> ស្ថិតិ (90 ថ្ងៃ)
+          </h3>
+          <div id="statsPanel"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======= STUDENTS ======= -->
+    <div id="tab-students" class="section">
+      <div class="glass rounded-2xl p-5">
+        <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
+          <h3 class="font-bold text-sm flex items-center gap-2">
+            <i class="ti ti-users"></i> បញ្ជីនិស្សិតទាំង 40 នាក់
+          </h3>
+          <input class="admin-input" style="width:220px;" id="searchInput" placeholder="ស្វែងរកឈ្មោះ..." oninput="filterStudents()" />
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>ឈ្មោះ</th>
+                <th>វេនបន្ទាប់</th>
+                <th>ចំនួនវេន</th>
+                <th>ស្ថានភាព</th>
+              </tr>
+            </thead>
+            <tbody id="studentTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======= SWAP ======= -->
+    <div id="tab-swap" class="section">
+      <div class="glass rounded-2xl p-5">
+        <h3 class="font-bold mb-4 text-sm flex items-center gap-2">
+          <i class="ti ti-repeat"></i> ការស្នើដូរវេន
+        </h3>
+        <div id="swapList"></div>
+      </div>
+    </div>
+
+    <!-- ======= NOTIFY ======= -->
+    <div id="tab-notify" class="section">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="glass rounded-2xl p-5">
+          <h3 class="font-bold mb-4 text-sm flex items-center gap-2">
+            <i class="ti ti-send"></i> ផ្ញើសារ Telegram
+          </h3>
+          <div class="flex gap-2 mb-3 flex-wrap">
+            <button class="btn-sm" onclick="prefillMsg('reminder')">🔔 រំលឹក</button>
+            <button class="btn-sm" onclick="prefillMsg('done')">✅ រួចរាល់</button>
+            <button class="btn-sm" onclick="prefillMsg('custom')">✏️ ផ្ទាល់ខ្លួន</button>
+          </div>
+          <textarea class="admin-input" id="telegramMsg" placeholder="សរសេរសារ..."></textarea>
+          <div class="flex items-center gap-3 mt-3">
+            <button class="btn-tg" onclick="sendTelegram()">
+              <i class="ti ti-send"></i> ផ្ញើ Telegram
+            </button>
+            <span id="sendStatus" class="text-xs opacity-70"></span>
+          </div>
+        </div>
+        <div class="glass rounded-2xl p-5">
+          <h3 class="font-bold mb-4 text-sm flex items-center gap-2">
+            <i class="ti ti-history"></i> ប្រវត្តិសារ
+          </h3>
+          <div id="msgHistory">
+            <p class="text-xs opacity-50">មិនទាន់មានប្រវត្តិ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ==========================================
+// CONFIG — កែត្រង់ទីនេះ
+// ==========================================
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'admin123';
+const BOT_TOKEN  = '8880912035:AAHyuxH72-wBdJ1W77bI5r61Y4HDt-Md1H8';
+const CHAT_ID    = '-1003502505377';
+
+// ==========================================
+// DATA
+// ==========================================
+const students = [
+  "ទន់ វីរៈ","ទិតថា រាជ្យបណ្ឌិត","ទុយ គុង","ទុយ សាមាស","ទុយ សុខលាភ",
+  "ទ្រី សេរីវិជ្ជា","នន សុធារិទ្ធិ","នាង អេនហ្គេល","នី គីមឃាង","នុត ចំរើន",
+  "នូ ជាសំណាង","នួន សំណាងតារា","ប៉ាន ជតពិសិដ្ឋ","ប៉ែន សំណាង","ប៊ី ជុងសេង",
+  "ប៊ុណ្ណា ដាវីដ","ប៊ូ ហង្សបូរី","ប៊ួរ សុវណ្ណសិលា","ប៊េ សុងហ័រ","បាន ប៊ុនហ៊ាន",
+  "បាន សុងជូ","បារាំង ភក្រ្តា","ប្រាក់ ខេមា","ប្រាក់ បញ្ញា","ផន គ្រឹស្នា",
+  "ផល មង្គល","ផាង បញ្ញា","ផាត់ យិនប៊ី","ផាត់ សុវណ្ណហេង","ផុន សទ្ធា",
+  "ផុល សុផល","ផេង គីមហុង","ផេង សុខាឌីណា","ពាង សុវិសា","ពាន ប៊ុនលី",
+  "ពៅ មន្នីពេជ្រ","ភន់ វាសនា","ភួងផល សំណាង","ម៉ក់ លីឈុន","ម៉ម ប៊ុនវាសនា"
+];
+
+const START_DATE = new Date(2026, 5, 1);
+
+let swapRequests = [
+  { from: 'ទន់ វីរៈ',   to: 'នន សុធារិទ្ធិ', date: 'ថ្ងៃព្រហស្បតិ៍' },
+  { from: 'ផន គ្រឹស្នា', to: 'ផល មង្គល',      date: 'ថ្ងៃសុក្រ'     },
+];
+
+let msgHistory = [];
+
+// ==========================================
+// HELPERS
+// ==========================================
+function workingDaysUntil(date) {
+  let start = new Date(START_DATE);
+  let end   = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  if (end < start) return 0;
+  let count = 0;
+  while (start <= end) {
+    let d = start.getDay();
+    if (d !== 0 && d !== 6) count++;
+    start.setDate(start.getDate() + 1);
+  }
+  return count;
+}
+
+function getDuty(date) {
+  let day = date.getDay();
+  if (day === 0 || day === 6) return null;
+  let wd = workingDaysUntil(date);
+  if (wd === 0) return null;
+  let idx = ((wd - 1) * 2) % students.length;
+  return [students[idx], students[(idx + 1) % students.length]];
+}
+
+function fmtDate(d) {
+  return d.toLocaleDateString('kh-KH', { weekday: 'short', month: 'short', day: 'numeric' });
+}
+
+function getTodayKey() {
+  let t = new Date();
+  return 'slide_done_' + t.getFullYear() + '_' + t.getMonth() + '_' + t.getDate();
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ==========================================
+// LOGIN / LOGOUT
+// ==========================================
+function doLogin() {
+  let u = document.getElementById('loginUser').value.trim();
+  let p = document.getElementById('loginPass').value.trim();
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+    init();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+document.getElementById('loginPass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+function doLogout() {
+  if (confirm('ចង់ចេញពី Admin Dashboard មែនទេ?')) {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('mainApp').style.display = 'none';
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+  }
+}
+
+// ==========================================
+// TABS
+// ==========================================
+function showTab(name, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ==========================================
+// INIT
+// ==========================================
+function init() {
+  let now = new Date();
+  document.getElementById('dateNow').textContent =
+    now.toLocaleDateString('kh-KH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+  let duty = getDuty(now);
+  let wd   = workingDaysUntil(now);
+  document.getElementById('todayNum').textContent = duty ? 'វេនទី ' + wd : 'សម្រាក';
+  if (duty) document.getElementById('todayPair').textContent = duty[0] + ' & ' + duty[1];
+
+  let doneCount = 0;
+  for (let k in localStorage) {
+    if (k.startsWith('slide_done_') && localStorage[k] === 'true') doneCount++;
+  }
+  document.getElementById('doneCount').textContent = doneCount;
+  document.getElementById('swapCount').textContent = swapRequests.length;
+
+  renderUpcoming();
+  renderStats();
+  renderStudents();
+  renderSwaps();
+}
+
+// ==========================================
+// OVERVIEW
+// ==========================================
+function renderUpcoming() {
+  let tbody = document.getElementById('upcomingTable');
+  let html  = '';
+  let now   = new Date();
+  let count = 0;
+  for (let i = 0; count < 7; i++) {
+    let d = new Date(); d.setDate(now.getDate() + i);
+    let duty = getDuty(d);
+    if (!duty) continue;
+    count++;
+    let key    = 'slide_done_' + d.getFullYear() + '_' + d.getMonth() + '_' + d.getDate();
+    let isDone = localStorage.getItem(key) === 'true';
+    let isToday = d.toDateString() === now.toDateString();
+    html += `<tr>
+      <td>${isToday ? '<b>ថ្ងៃនេះ</b>' : fmtDate(d)}</td>
+      <td style="font-size:0.75rem;">${duty[0]}<br><span style="opacity:0.6;">& ${duty[1]}</span></td>
+      <td>${isDone
+        ? '<span class="badge-done">រួចរាល់</span>'
+        : '<span class="badge-pending">មិនទាន់</span>'}</td>
+    </tr>`;
+  }
+  tbody.innerHTML = html;
+}
+
+function renderStats() {
+  let panel = document.getElementById('statsPanel');
+  let map   = {};
+  let now   = new Date();
+  for (let i = 0; i < 90; i++) {
+    let d    = new Date(); d.setDate(now.getDate() - i);
+    let duty = getDuty(d);
+    if (duty) {
+      map[duty[0]] = (map[duty[0]] || 0) + 1;
+      map[duty[1]] = (map[duty[1]] || 0) + 1;
+    }
+  }
+  let sorted = Object.entries(map).sort((a, b) => b[1] - a[1]).slice(0, 6);
+  let max    = sorted[0] ? sorted[0][1] : 1;
+  const colors = ['#6366f1','#10b981','#f59e0b','#ec4899','#14b8a6','#f97316'];
+  let html = '<p style="font-size:0.75rem;opacity:0.6;margin-bottom:12px;">ចំនួនវេន (90 ថ្ងៃ)</p>';
+  sorted.forEach(([name, count], i) => {
+    let pct   = Math.round((count / max) * 100);
+    let short = name.split(' ')[0];
+    html += `
+      <div style="margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;opacity:0.8;margin-bottom:4px;">
+          <span>${short}</span><span>${count}</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${pct}%;background:${colors[i]};"></div>
+        </div>
+      </div>`;
+  });
+  panel.innerHTML = html;
+}
+
+// ==========================================
+// STUDENTS
+// ==========================================
+function renderStudents(filter) {
+  let tbody = document.getElementById('studentTable');
+  let list  = filter ? students.filter(s => s.includes(filter)) : students;
+  let now   = new Date();
+  let html  = '';
+  list.forEach((name, i) => {
+    let nextDuty = '—';
+    for (let j = 0; j < 90; j++) {
+      let d    = new Date(); d.setDate(now.getDate() + j);
+      let duty = getDuty(d);
+      if (duty && duty.includes(name)) { nextDuty = fmtDate(d); break; }
+    }
+    let cnt = 0;
+    for (let j = 0; j < 200; j++) {
+      let d    = new Date(); d.setDate(now.getDate() - j);
+      let duty = getDuty(d);
+      if (duty && duty.includes(name)) cnt++;
+    }
+    let key     = 'slide_done_' + now.getFullYear() + '_' + now.getMonth() + '_' + now.getDate();
+    let isDone  = localStorage.getItem(key) === 'true';
+    let duty    = getDuty(now);
+    let isToday = duty && duty.includes(name);
+    html += `<tr ${isToday ? 'style="background:rgba(99,102,241,0.1);"' : ''}>
+      <td style="opacity:0.5;">${i + 1}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="avatar">${name[0]}</span> ${name}
+          ${isToday ? '<span class="badge-done" style="font-size:0.68rem;">ថ្ងៃនេះ</span>' : ''}
+        </div>
+      </td>
+      <td style="font-size:0.75rem;opacity:0.7;">${nextDuty}</td>
+      <td>${cnt}</td>
+      <td>${isToday && isDone
+        ? '<span class="badge-done">រួចរាល់</span>'
+        : isToday
+        ? '<span class="badge-pending">មិនទាន់</span>'
+        : '<span style="opacity:0.3;font-size:0.75rem;">—</span>'}</td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+}
+
+function filterStudents() {
+  renderStudents(document.getElementById('searchInput').value.trim());
+}
+
+// ==========================================
+// SWAP
+// ==========================================
+function renderSwaps() {
+  let list = document.getElementById('swapList');
+  if (!swapRequests.length) {
+    list.innerHTML = '<p style="font-size:0.82rem;opacity:0.5;">មិនមានការស្នើដូរវេនទេ</p>';
+    return;
+  }
+  let html = '';
+  swapRequests.forEach((s, i) => {
+    html += `<div class="swap-item">
+      <div>
+        <span style="font-weight:600;">${s.from}</span>
+        <span style="opacity:0.5;margin:0 6px;">⇄</span>
+        <span style="font-weight:600;">${s.to}</span>
+        <span style="font-size:0.72rem;opacity:0.5;margin-left:8px;">${s.date}</span>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button class="btn-sm btn-success" onclick="approveSwap(${i})">
+          <i class="ti ti-check" style="font-size:12px;vertical-align:-1px;"></i> អនុម័ត
+        </button>
+        <button class="btn-sm btn-danger" onclick="rejectSwap(${i})">
+          <i class="ti ti-x" style="font-size:12px;vertical-align:-1px;"></i> បដិសេធ
+        </button>
+      </div>
+    </div>`;
+  });
+  list.innerHTML = html;
+}
+
+function approveSwap(i) {
+  let s = swapRequests[i];
+  swapRequests.splice(i, 1);
+  document.getElementById('swapCount').textContent = swapRequests.length;
+  renderSwaps();
+  showToast('✅ អនុម័តការដូរ: ' + s.from + ' ⇄ ' + s.to);
+}
+
+function rejectSwap(i) {
+  swapRequests.splice(i, 1);
+  document.getElementById('swapCount').textContent = swapRequests.length;
+  renderSwaps();
+  showToast('❌ បានបដិសេធការស្នើ');
+}
+
+// ==========================================
+// TELEGRAM
+// ==========================================
+function prefillMsg(type) {
+  let now     = new Date();
+  let duty    = getDuty(now);
+  let pair    = duty ? duty[0] + ' & ' + duty[1] : '—';
+  let dateStr = now.toLocaleDateString('kh-KH', { day: 'numeric', month: 'long', year: 'numeric' });
+  let timeStr = now.toLocaleTimeString('kh-KH', { hour: '2-digit', minute: '2-digit' });
+  const msgs  = {
+    reminder: `📢 [រំលឹកវេនថ្នាក់ ITE A3]\n\nថ្ងៃ ${dateStr} — ម៉ោង ${timeStr}\n⭐ វេនរបស់: ${pair}\n⏰ សូមរៀបចំស្លាយមុនម៉ោង 12:30\n\n⚡ ITE A3 Admin`,
+    done:     `✅ [រាយការណ៍ស្លាយ]\n\nស្លាយបានរៀបចំរួចរាល់ដោយ: ${pair}\n📅 ${dateStr} — ⏰ ${timeStr}\n\n⚡ ITE A3 Admin`,
+    custom:   ''
+  };
+  document.getElementById('telegramMsg').value = msgs[type];
+}
+
+function sendTelegram() {
+  let msg    = document.getElementById('telegramMsg').value.trim();
+  let status = document.getElementById('sendStatus');
+  if (!msg) { showToast('⚠️ សូមសរសេរសារសិន!'); return; }
+  status.textContent = 'កំពុងផ្ញើ...';
+
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'HTML' })
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d.ok) {
+      status.textContent = '✓ ផ្ញើជោគជ័យ!';
+      showToast('✈️ ផ្ញើ Telegram ជោគជ័យ!');
+      let time = new Date().toLocaleTimeString();
+      msgHistory.unshift({ text: msg, time });
+      let hist = document.getElementById('msgHistory');
+      hist.innerHTML = msgHistory.map(m => `
+        <div class="msg-hist-item">
+          <p style="font-size:0.72rem;opacity:0.5;margin-bottom:4px;">${m.time}</p>
+          <p style="font-size:0.78rem;white-space:pre-wrap;">${m.text}</p>
+        </div>`).join('');
+      document.getElementById('telegramMsg').value = '';
+      setTimeout(() => status.textContent = '', 3000);
+    } else {
+      status.textContent = '❌ ' + d.description;
+    }
+  })
+  .catch(() => { status.textContent = '❌ ផ្ញើមិនបាន'; });
+}
+</script>
+</body>
+</html>
