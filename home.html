@@ -3,313 +3,794 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITE A3 - ប្រព័ន្ធគ្រប់គ្រងថ្នាក់រៀនលំដាប់កំពូល</title>
+  <title>ITE A3 - វេនយកស្លាយ v3.8 (Lightweight)</title>
   <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
       font-family: 'Kantumruy Pro', sans-serif;
-      background: #090d16;
-      overflow-x: hidden;
-    }
-    
-    /* 🌌 Background Dynamic Mesh */
-    .bg-mesh {
-      position: fixed;
-      inset: 0;
       background: 
-        radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 45%),
-        linear-gradient(rgba(9, 13, 22, 0.5), rgba(9, 13, 22, 0.5)),
+        linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)),
         url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjXxGArgP0d4MOf1uHAzVD2CkwE7Oyv2NdKa1m5s3gqO3GfGiV8v1e5BwobjNX60kbclIla3MK2OwuiaxQ0klZ-vZfSCzfHZd7-GIbG4MuL6f6CY7BT6wP3QQ-SXyypGHsmUCrmBPqV4n7v/s1600/Untitled.png');
       background-size: cover;
-      background-position: center;
       background-attachment: fixed;
-      z-index: -2;
+      background-position: center;
+      transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* ✨ Floating Glowing Blobs */
-    .glow-blob {
-      position: fixed;
-      width: 450px;
-      height: 450px;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.4;
-      pointer-events: none;
-      z-index: -1;
-      animation: floatGlow 12s infinite alternate ease-in-out;
-    }
-    .blob-1 { bg: rgba(6, 182, 212, 0.3); top: -10%; left: -10%; animation-delay: 0s; }
-    .blob-2 { bg: rgba(168, 85, 247, 0.3); bottom: -10%; right: -10%; animation-delay: 4s; }
-
-    @keyframes floatGlow {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(60px, 40px) scale(1.15); }
+    @media (max-width: 768px) {
+      body {
+        background: 
+          linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+          url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThyoJ9SbtSQALOAYdcuVa2ig_7Fx2zffIX73_lTfZBnZI9ADetGWjq0b-9&s=10');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+      }
     }
 
-    /* 🧪 Next-Gen Glassmorphism */
-    .premium-glass {
-      background: rgba(13, 20, 38, 0.45);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    .glass {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body.darkmode {
+      color: #f1f5f9;
+      background-image: 
+        linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.88)),
+        url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjXxGArgP0d4MOf1uHAzVD2CkwE7Oyv2NdKa1m5s3gqO3GfGiV8v1e5BwobjNX60kbclIla3MK2OwuiaxQ0klZ-vZfSCzfHZd7-GIbG4MuL6f6CY7BT6wP3QQ-SXyypGHsmUCrmBPqV4n7v/s1600/Untitled.png');
+    }
+
+    body.darkmode .glass {
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     
-    .premium-glass:hover {
-      background: rgba(17, 27, 54, 0.6);
-      border-color: rgba(99, 102, 241, 0.35);
-      box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
-      transform: translateY(-6px) scale(1.01);
-    }
-
-    /* 💫 Shimmer Effect for Header Line */
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-    .shimmer-line {
-      background: linear-gradient(90deg, #6366f1, #a855f7, #06b6d4, #6366f1);
-      background-size: 200% auto;
-      animation: shimmer 4s linear infinite;
-    }
-
-    @keyframes modalEntrance {
-      from { opacity: 0; transform: scale(0.9) translateY(20px); filter: blur(8px); }
-      to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-    }
-    .animate-modal {
-      animation: modalEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
+    .touch-target { min-height: 44px; }
   </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col justify-between p-4 md:p-8 relative">
+<body class="text-white p-3 md:p-6 min-h-screen flex flex-col justify-between transition-colors duration-300">
 
-  <div class="bg-mesh"></div>
-  <div class="glow-blob blob-1 bg-cyan-500/20"></div>
-  <div class="glow-blob blob-2 bg-purple-500/20"></div>
-
-  <header class="text-center max-w-3xl mx-auto mt-8 mb-4 space-y-4">
-    <div class="relative inline-block group">
-      <div class="absolute inset-0 bg-indigo-500 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition duration-500"></div>
-      <img src="https://www.rupp.edu.kh/assets/logo.svg" class="w-20 md:w-24 mx-auto relative drop-shadow-2xl transition-transform duration-500 group-hover:rotate-6" alt="RUPP Logo">
+<div id="updateModal" class="fixed inset-0 z-50 items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden">
+  <div class="glass max-w-md w-full p-6 rounded-3xl shadow-2xl border border-white/20 animate-fade-in relative text-center">
+    
+    <div class="w-16 h-16 bg-gradient-to-tr from-cyan-400 via-indigo-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl shadow-indigo-500/30">
+      <i class="fa-solid fa-hands-clapping text-2xl text-white"></i>
     </div>
     
-    <div class="space-y-1">
-      <h1 class="text-3xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-indigo-200">
-        ប្រព័ន្ធគ្រប់គ្រងថ្នាក់រៀន <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">ITE A3</span>
-      </h1>
-      <p class="text-[11px] md:text-xs tracking-widest text-indigo-300 font-medium uppercase bg-indigo-950/40 px-3 py-1 rounded-full inline-block border border-indigo-500/10 backdrop-blur-md">
-        ⚡ INFO TECH & ENGINEERING • RUPP
-      </p>
+    <h3 class="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-200 to-purple-400 mb-1">កំណែអាប់ដេតថ្មី! 🎉</h3>
+    <p class="text-[11px] text-cyan-300 tracking-wider uppercase mb-4">Welcome Back, ITE A3 Team!</p>
+    
+    <div class="text-left space-y-3.5 my-4 bg-black/40 p-5 rounded-2xl border border-white/5 text-sm leading-relaxed text-slate-300">
+      <p class="text-center font-bold text-white text-base mb-1">សូមរីករាយជាមួយនឹងកម្មវិធីឆ្លាតវៃជំនាន់ថ្មី! 👋</p>
+      <p class="text-xs text-center text-slate-400 mb-4">ស្វាគមន៍មកកាន់ប្រព័ន្ធពិនិត្យវេនយកស្លាយ Version 3.8</p>
+      <p>លើកនេះកម្មវិធីរបស់យើងបានកែសម្រួលថ្មី ដើម្បីឱ្យគ្នាយើងកាន់តែ**ងាយស្រួលឆែកមើលវេនប្រចាំថ្ងៃ** រត់លឿនជាងមុន និងទំនើបជាងមុន។</p>
+      
+      <div class="bg-white/5 p-3 rounded-xl border border-white/5 space-y-1.5 text-xs text-slate-400">
+        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> ឆែកមើលវេន និងរាប់ថយក្រោយច្បាស់លាស់</div>
+        <div class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400"></i> ងាយស្រួលស្នើសុំដូរវេន និងរំលឹកគ្នាក្នុង Telegram</div>
+        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> មើលមុនបានថាភ្លៀងឬអត់ ស្រួលដេកផ្ទះ</div>
+        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> អ្នកបង្កើតកម្មវិធីស្មោះជាងមុន១០ដង</div>
+      </div>
     </div>
-    <div class="w-32 h-1.5 shimmer-line mx-auto rounded-full shadow-lg shadow-indigo-500/20"></div>
-  </header>
 
-  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-3 max-w-sm w-full pointer-events-none"></div>
+    <button onclick="closeUpdateModal()" class="touch-target w-full py-3 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 hover:opacity-90 active:scale-95 text-xs font-bold rounded-xl transition shadow-lg shadow-indigo-500/20 tracking-wide text-white">
+      តោះចូលទៅកាន់កម្មវិធីឥឡូវនេះ! 🚀
+    </button>
+  </div>
+</div>
 
-  <div id="requestModal" class="fixed inset-0 z-50 items-center justify-center p-4 bg-slate-950/75 backdrop-blur-xl hidden transition-opacity duration-300">
-    <div class="premium-glass max-w-md w-full p-6 md:p-8 rounded-3xl shadow-2xl border border-white/10 animate-modal relative">
-      
-      <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition duration-200 active:scale-90">
-        <i class="fa-solid fa-circle-xmark text-2xl"></i>
+<div id="profileModal" class="fixed inset-0 z-50 items-center justify-center p-4 bg-black/70 backdrop-blur-md hidden">
+  <div class="glass max-w-sm w-full p-6 rounded-3xl text-center shadow-2xl border border-white/20 animate-fade-in relative">
+    <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-white/60 hover:text-white transition"><i class="fa-solid fa-circle-xmark text-xl"></i></button>
+    <div class="w-20 h-20 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-md border-2 border-white/20">
+      <i class="fa-solid fa-user-graduate text-3xl text-white"></i>
+    </div>
+    <h3 id="profName" class="text-xl font-bold text-white mb-0.5">---</h3>
+    <p class="text-[11px] text-indigo-300 tracking-wider uppercase mb-4">Class Member • ITE A3</p>
+    <div class="grid grid-cols-2 gap-2 text-left mb-4">
+      <div class="bg-black/20 p-3 rounded-2xl border border-white/5">
+        <span class="text-[10px] text-slate-400 block">Check-ins សរុប</span>
+        <b id="profCount" class="text-base text-emerald-400">0 ដង</b>
+      </div>
+      <div class="bg-black/20 p-3 rounded-2xl border border-white/5">
+        <span class="text-[10px] text-slate-400 block">កម្រិតវិន័យ</span>
+        <b id="profPunctuality" class="text-base text-sky-400">100%</b>
+      </div>
+    </div>
+    <div class="bg-white/5 p-3 rounded-2xl border border-white/5 text-xs text-slate-300 text-left mb-1">
+      <i class="fa-solid fa-medal text-amber-400 mr-1"></i> ស្ថានភាពមេដាយ៖ <span id="profMedal" class="font-bold">None</span>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-6xl mx-auto w-full mb-10 space-y-5">
+  
+  <div class="text-center relative py-4">
+    
+    <div class="absolute top-2 right-2 flex items-center gap-2 z-40">
+      <a href="home.html" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-indigo-600/80 border border-white/10 hover:border-indigo-400/40 transition active:scale-95 text-xs font-semibold shadow-md flex items-center justify-center gap-1.5 h-11 backdrop-blur-md text-white" title="ទៅកាន់ទំព័រដើម">
+        <i class="fa-solid fa-house text-indigo-200 text-sm"></i>
+        <span class="hidden sm:inline">ទំព័រដើម</span>
+      </a>
+      <button onclick="toggleDarkMode()" class="p-3 rounded-xl bg-white/10 hover:bg-white/20 transition active:scale-95 text-sm font-medium shadow-md flex items-center justify-center w-11 h-11 border border-white/10 backdrop-blur-md" title="ប្ដូរពណ៌ផ្ទៃក្រោយ">
+        <i id="themeIcon" class="fa-solid fa-moon"></i>
       </button>
-      
-      <h3 id="modalTitle" class="text-xl md:text-2xl font-bold text-white tracking-tight">---</h3>
-      <p id="modalDesc" class="text-xs text-slate-400 mt-1 mb-6">---</p>
-      
-      <div class="space-y-4 text-left text-sm">
-        <div class="relative">
-          <label class="block text-xs font-semibold text-indigo-300 uppercase tracking-wider mb-1.5 ml-1">ឈ្មោះនិស្សិត</label>
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fa-solid fa-user text-xs"></i></span>
-            <input type="text" id="studentName" placeholder="ឧទាហរណ៍៖ បារាំង ភក្ត្រា" class="w-full bg-slate-900/60 text-white pl-10 pr-4 py-3 rounded-xl border border-slate-700/60 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-medium text-sm placeholder-slate-500 shadow-inner">
-          </div>
+    </div>
+
+    <img src="https://www.rupp.edu.kh/assets/logo.svg" class="w-20 md:w-24 mx-auto mb-3 drop-shadow-md" alt="RUPP Logo">
+    <h1 class="text-3xl md:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-100 to-indigo-300">វេនយកស្លាយ ថ្នាក់A3</h1>
+    <p class="text-xs md:text-sm tracking-wide text-indigo-200 font-light mt-1">ROYAL UNIVERSITY OF PHNOM PENH • DEPARTMENT OF ITE</p>
+    
+    <div class="mt-3 max-w-xl mx-auto px-4">
+      <p id="quoteDisplay" class="text-xs md:text-sm text-slate-300 italic font-light bg-black/20 py-1.5 px-3 rounded-xl inline-block border border-white/5"></p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="glass rounded-2xl p-5 flex flex-col justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-2 text-indigo-300">
+          <i class="fa-regular fa-clock text-lg"></i>
+          <h3 class="font-bold text-base md:text-lg">ម៉ោងបច្ចុប្បន្ន</h3>
         </div>
-        
-        <div>
-          <label class="block text-xs font-semibold text-indigo-300 uppercase tracking-wider mb-1.5 ml-1">មូលហេតុ / ភារកិច្ច</label>
-          <div class="relative">
-            <span class="absolute top-3 left-3.5 text-slate-400"><i class="fa-solid fa-pen-nib text-xs"></i></span>
-            <textarea id="requestReason" rows="3" placeholder="សរសេរមូលហេតុរបស់អ្នកនៅទីនេះ..." class="w-full bg-slate-900/60 text-white pl-10 pr-4 py-3 rounded-xl border border-slate-700/60 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-medium text-sm placeholder-slate-500 resize-none shadow-inner"></textarea>
+        <div id="clock" class="text-2xl md:text-3xl font-bold text-indigo-200 tracking-wider">--:--:--</div>
+      </div>
+      <div class="pt-3 border-t border-white/10">
+        <p class="text-xs text-slate-400 flex items-center gap-1 mb-1">
+          <i class="fa-solid fa-hourglass-half text-amber-400 animate-spin" style="animation-duration: 3s"></i>
+          រាប់ថយក្រោយទៅម៉ោងចូលរៀន (12:30 PM):
+        </p>
+        <p id="countdown" class="text-sm font-semibold text-amber-400">--:--:--</p>
+      </div>
+    </div>
+
+    <div class="glass rounded-2xl p-5 flex flex-col justify-between gap-4">
+      <div>
+        <div class="flex justify-between items-start mb-1">
+          <div class="flex items-center gap-2 text-emerald-400">
+            <i class="fa-solid fa-star text-base"></i>
+            <h3 class="font-bold text-base md:text-lg">វេនយកស្លាយថ្ងៃនេះ</h3>
           </div>
+          <span id="slideStatusBadge" class="text-[10px] md:text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider"></span>
         </div>
-        
-        <button onclick="submitRequestToTelegram()" class="w-full mt-2 py-3.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:opacity-95 text-white font-bold rounded-xl shadow-lg shadow-purple-500/20 active:scale-95 transition-all text-sm tracking-wide flex items-center justify-center gap-2">
-          <i class="fa-brands fa-telegram text-lg animate-bounce" style="animation-duration: 2s"></i> ផ្ញើដំណឹងទៅកាន់គ្រុបថ្នាក់ភ្លាមៗ
+        <div id="todayDuty" class="text-base md:text-lg font-bold text-white mb-2 py-1 bg-white/5 px-2 rounded-xl border border-white/5"></div>
+      </div>
+      
+      <div class="grid grid-cols-1 gap-2">
+        <div id="actionStatusArea" class="grid grid-cols-1 gap-1">
+          <button id="btnMarkDone" onclick="markAsDone()" class="touch-target w-full py-2 px-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 active:scale-95 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1 shadow-md">
+            <i class="fa-regular fa-circle-check"></i> បញ្ជាក់ថាបានយកស្លាយរួចរាល់
+          </button>
+          <button id="btnResetDone" onclick="resetDoneStatus()" class="w-full text-[11px] text-red-400 hover:text-red-300 hover:underline transition py-1 hidden">
+            <i class="fa-solid fa-rotate-left"></i> ច្រឡំ? ដាក់ថា «មិនទាន់យក» វិញ
+          </button>
+        </div>
+
+        <div class="flex gap-2 border-t border-white/10 pt-2">
+          <button onclick="copyDutyInfo()" class="flex-1 py-2 px-2 bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
+            <i class="fa-regular fa-copy"></i> ចម្លង
+          </button>
+          <button onclick="shareViaWebAPI()" class="flex-1 py-2 px-2 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
+            <i class="fa-solid fa-share-nodes"></i> Share រហ័ស
+          </button>
+          <button onclick="shareToTelegram()" class="p-2 bg-sky-600 hover:bg-sky-700 active:scale-95 text-xs font-medium rounded-xl transition flex items-center justify-center" title="រំលឹកក្នុងគ្រុប Telegram ធំ">
+            <i class="fa-brands fa-telegram text-base"></i>
+          </button>
+        </div>
+        <button onclick="addToGoogleCalendar()" class="w-full py-2 px-2 bg-slate-700 hover:bg-slate-600 active:scale-95 text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
+          <i class="fa-regular fa-calendar-plus"></i> Add to Google Calendar
         </button>
+      </div>
+    </div>
+
+    <div class="glass rounded-2xl p-5 flex flex-col justify-between gap-3">
+      <div class="flex items-center justify-between text-indigo-300">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-chart-pie text-lg"></i>
+          <h3 class="font-bold text-base md:text-lg">📊 ស្ថិតិរួម Dashboard</h3>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        <div class="bg-black/20 p-2.5 rounded-xl border border-white/5">
+          <span class="text-slate-400 block mb-0.5">និស្សិតសរុប</span>
+          <b class="text-base text-white">40 នាក់</b>
+        </div>
+        <div class="bg-black/20 p-2.5 rounded-xl border border-white/5">
+          <span class="text-slate-400 block mb-0.5">Check-ins សរុប</span>
+          <b id="statTotalCheckins" class="text-base text-emerald-400">0 ដង</b>
+        </div>
+        <div class="bg-black/20 p-2.5 rounded-xl border border-white/5">
+          <span class="text-slate-400 block mb-0.5">អត្រាជោគជ័យ</span>
+          <b id="statCompletionRate" class="text-base text-sky-400">100%</b>
+        </div>
+        <div class="bg-black/20 p-2.5 rounded-xl border border-white/5">
+          <span class="text-slate-400 block mb-0.5">សកម្មភាពខែនេះ</span>
+          <b id="statMonthlyCount" class="text-base text-purple-400">0 ថ្ងៃ</b>
+        </div>
+      </div>
+      <div class="pt-2 border-t border-white/10">
+        <p id="teamNo" class="text-xs font-medium text-emerald-400 flex items-center gap-1">
+          <i class="fa-solid fa-hashtag"></i> លំដាប់ថ្ងៃវេន...
+        </p>
       </div>
     </div>
   </div>
 
-  <main class="max-w-4xl mx-auto w-full my-8 md:my-12 px-2">
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-      
-      <a href="index.html" class="premium-glass p-6 rounded-2xl flex items-center gap-5 group relative overflow-hidden">
-        <div class="absolute -right-6 -bottom-6 text-white/5 text-7xl font-bold group-hover:scale-125 transition duration-500"><i class="fa-solid fa-square-poll-horizontal"></i></div>
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-400 via-orange-500 to-red-500 flex items-center justify-center text-white text-2xl shadow-lg shadow-orange-500/30 ring-4 ring-orange-500/10">
-          <i class="fa-solid fa-square-poll-horizontal"></i>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="glass rounded-2xl p-5">
+      <div class="flex items-center gap-2 mb-3 text-amber-400">
+        <i class="fa-solid fa-trophy text-lg"></i>
+        <h3 class="font-bold text-base md:text-lg">ប្រព័ន្ធមេដាយការងារ (Achievements)</h3>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+        <div class="p-2 bg-white/5 rounded-xl border border-white/5 flex flex-col items-center opacity-40" id="badgeBronze">
+          <span class="text-2xl mb-1">🥉</span>
+          <b class="text-amber-600 block">Bronze</b>
+          <span class="text-[10px] text-slate-400">Check-in 3ដង</span>
         </div>
-        <div class="flex-1 z-10">
-          <h3 class="text-lg font-bold group-hover:text-amber-400 transition-colors duration-300 flex items-center gap-1.5">
-            វេនយកស្លាយប្រចាំថ្ងៃ <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-0 group-hover:opacity-100 transition-all"></i>
-          </h3>
-          <p class="text-xs text-slate-400 mt-1 leading-relaxed">ពិនិត្យមើលអ្នកត្រូវវេន បញ្ជាក់ការយក និងប្រព័ន្ធ AI ដូរវេន</p>
+        <div class="p-2 bg-white/5 rounded-xl border border-white/5 flex flex-col items-center opacity-40" id="badgeSilver">
+          <span class="text-2xl mb-1">🥈</span>
+          <b class="text-slate-300 block">Silver</b>
+          <span class="text-[10px] text-slate-400">Check-in 5ដង</span>
         </div>
-      </a>
-
-      <button onclick="openRequestModal('leave')" class="premium-glass p-6 rounded-2xl flex items-center gap-5 group text-left w-full relative overflow-hidden">
-        <div class="absolute -right-6 -bottom-6 text-white/5 text-7xl font-bold group-hover:scale-125 transition duration-500"><i class="fa-solid fa-file-signature"></i></div>
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-pink-500 via-red-500 to-rose-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-red-500/30 ring-4 ring-red-500/10">
-          <i class="fa-solid fa-file-signature"></i>
+        <div class="p-2 bg-white/5 rounded-xl border border-white/5 flex flex-col items-center opacity-40" id="badgeGold">
+          <span class="text-2xl mb-1">🥇</span>
+          <b class="text-yellow-400 block">Gold</b>
+          <span class="text-[10px] text-slate-400">Check-in 10ដង</span>
         </div>
-        <div class="flex-1 z-10">
-          <h3 class="text-lg font-bold group-hover:text-red-400 transition-colors duration-300">ប្រព័ន្ធសុំច្បាប់ (Absent)</h3>
-          <p class="text-xs text-slate-400 mt-1 leading-relaxed">ផ្ញើលិខិតសុំច្បាប់ឈប់សម្រាកដោយមានធុរៈ ឬឈឺ ទៅកាន់គ្រុបថ្នាក់</p>
+        <div class="p-2 bg-white/5 rounded-xl border border-white/5 flex flex-col items-center opacity-40" id="badgeMaster">
+          <span class="text-2xl mb-1">👑</span>
+          <b class="text-purple-400 block">Slide Master</b>
+          <span class="text-[10px] text-slate-400">Check-in 20ដង</span>
         </div>
-      </button>
-
-      <button onclick="openRequestModal('late')" class="premium-glass p-6 rounded-2xl flex items-center gap-5 group text-left w-full relative overflow-hidden">
-        <div class="absolute -right-6 -bottom-6 text-white/5 text-7xl font-bold group-hover:scale-125 transition duration-500"><i class="fa-regular fa-clock"></i></div>
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-400 via-sky-500 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-sky-500/30 ring-4 ring-sky-500/10">
-          <i class="fa-regular fa-clock"></i>
-        </div>
-        <div class="flex-1 z-10">
-          <h3 class="text-lg font-bold group-hover:text-sky-400 transition-colors duration-300">ប្រព័ន្ធសុំយឺត (Late)</h3>
-          <p class="text-xs text-slate-400 mt-1 leading-relaxed">ជូនដំណឹងជាមុនក្នុងករណីមានធុរៈរវល់ ឬស្ទះចរាចរណ៍មកមិនទាន់ម៉ោង</p>
-        </div>
-      </button>
-
-      <a href="https://t.me/+nLE3Q8E6MN41NGM1" target="_blank" class="premium-glass p-6 rounded-2xl flex items-center gap-5 group relative overflow-hidden">
-        <div class="absolute -right-6 -bottom-6 text-white/5 text-7xl font-bold group-hover:scale-125 transition duration-500"><i class="fa-brands fa-telegram"></i></div>
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-500 via-sky-400 to-teal-400 flex items-center justify-center text-white text-2xl shadow-lg shadow-sky-500/30 ring-4 ring-sky-500/10">
-          <i class="fa-brands fa-telegram text-2xl"></i>
-        </div>
-        <div class="flex-1 z-10">
-          <h3 class="text-lg font-bold group-hover:text-sky-300 transition-colors duration-300 flex items-center gap-1.5">
-            ក្រុម Telegram ថ្នាក់ <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-0 group-hover:opacity-100 transition-all"></i>
-          </h3>
-          <p class="text-xs text-slate-400 mt-1 leading-relaxed">ចូលទៅកាន់សហគមន៍ និងការពិភាក្សាផ្លូវការរបស់ ITE A3</p>
-        </div>
-      </a>
-
+      </div>
+      <p class="text-[10px] text-slate-400 mt-3 text-center italic">*ចុចលើឈ្មោះណាមួយក្នុងតារាង Top Active ដើម្បីពិនិត្យមើល Profile</p>
     </div>
-  </main>
 
-  <footer class="w-full text-center py-5 text-xs text-slate-500 border-t border-white/5 bg-slate-950/20 backdrop-blur-md">
-    <p class="font-medium">👨‍💻 Core Architecture Developed with ❤️ for <span class="text-indigo-400 font-semibold">ITE A3 Community</span></p>
-  </footer>
+    <div class="glass rounded-2xl p-5">
+      <div class="flex items-center gap-2 mb-3 text-yellow-400">
+        <i class="fa-solid fa-ranking-star text-lg"></i>
+        <h3 class="font-bold text-base md:text-lg">តារាងកំពូលអ្នកឧស្សាហ៍ (Top Active Students)</h3>
+      </div>
+      <div class="max-h-[145px] overflow-y-auto space-y-1.5 pr-1" id="leaderboardList"></div>
+    </div>
+  </div>
+
+  <div class="glass rounded-2xl p-5">
+    <div class="flex items-center gap-2 mb-3 text-indigo-300">
+      <i class="fa-regular fa-calendar-days text-lg"></i>
+      <h3 class="font-bold text-base md:text-lg">កាលវិភាគប្រចាំសប្ដាហ៍នេះ (Weekly View)</h3>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-6 gap-2 text-center" id="weeklySchedule"></div>
+  </div>
+
+  <div class="glass rounded-2xl p-5">
+    <div class="flex items-center justify-between mb-1">
+      <div class="flex items-center gap-2 text-amber-400">
+        <i class="fa-solid fa-robot text-lg"></i>
+        <h3 class="font-bold text-base md:text-lg">ប្រព័ន្ធឆ្លាតវៃស្នើសុំដូរវេនគ្នា (AI Smart Matchmaker v2)</h3>
+      </div>
+      <button onclick="runAISmartOptimizer()" class="text-xs bg-indigo-600/60 hover:bg-indigo-600 px-2 py-1 rounded-lg text-[11px] font-medium transition">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> ជំនួយការ AI ស្វែងរកដៃគូ
+      </button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 text-xs"><i class="fa-solid fa-user"></i></span>
+        <input type="text" id="yourName" placeholder="ឧទាហរណ៍៖ បារាំង ភក្ត្រា" class="w-full text-black pl-8 pr-3 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 touch-target">
+      </div>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 text-xs"><i class="fa-solid fa-user-friends"></i></span>
+        <input type="text" id="targetName" placeholder="ឈ្មោះមិត្តភក្តិដែលចង់ដូរជាមួយ" class="w-full text-black pl-8 pr-3 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 touch-target">
+      </div>
+      <button onclick="requestSwap()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 active:scale-95 text-xs font-bold py-2 px-4 rounded-xl transition flex items-center justify-center gap-2 shadow-md touch-target">
+        <i class="fa-brands fa-telegram text-base"></i> ផ្ញើសារស្នើសុំដូរវេនទៅ Telegram
+      </button>
+    </div>
+    <div id="aiSuggestionBox" class="mt-2.5 p-2.5 bg-indigo-950/40 rounded-xl border border-indigo-500/20 text-xs text-indigo-200 hidden animate-fade-in"></div>
+  </div>
+
+  <div class="glass rounded-2xl p-5">
+    <div class="flex items-center gap-2 mb-3 text-indigo-300">
+      <i class="fa-solid fa-calendar-week text-lg"></i>
+      <h3 class="font-bold text-base md:text-lg">វេនប្រចាំការ ៧ ថ្ងៃបន្ទាប់</h3>
+    </div>
+    <ul id="upcoming" class="space-y-2 text-sm divide-y divide-white/10"></ul>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="glass rounded-2xl p-5">
+      <div class="flex items-center gap-2 mb-2 text-indigo-300">
+        <i class="fa-regular fa-calendar text-base"></i>
+        <h3 class="font-bold text-base">ស្វែងរកតាមកាលបរិច្ឆេទ</h3>
+      </div>
+      <input type="date" id="datePick" class="text-black p-2.5 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm touch-target">
+      <p id="dateResult" class="mt-3 text-xs md:text-sm font-medium bg-black/20 p-3 rounded-xl border border-white/5 hidden animate-fade-in"></p>
+    </div>
+    <div class="glass rounded-2xl p-5">
+      <div class="flex items-center gap-2 mb-2 text-indigo-300">
+        <i class="fa-solid fa-magnifying-glass text-base"></i>
+        <h3 class="font-bold text-base">ស្វែងរកឈ្មោះនិស្សិត</h3>
+      </div>
+      <input id="studentSearch" placeholder="ឧទាហរណ៍៖ បារាំង ភក្ត្រា" class="text-black p-2.5 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm touch-target">
+      <p id="studentResult" class="mt-3 text-xs md:text-sm font-medium bg-black/20 p-3 rounded-xl border border-white/5 hidden animate-fade-in"></p>
+    </div>
+  </div>
+
+  <div class="glass rounded-2xl p-5 overflow-x-auto">
+    <div class="flex items-center justify-between mb-3 min-w-[500px]">
+      <div class="flex items-center gap-2 text-indigo-300">
+        <i class="fa-regular fa-calendar-check text-lg"></i>
+        <h3 class="font-bold text-base md:text-lg">ប្រតិទិនប្រចាំខែនេះ</h3>
+      </div>
+    </div>
+    <div class="min-w-[550px]">
+      <div class="grid grid-cols-7 gap-1 text-center font-bold text-xs mb-2 text-indigo-300/80 bg-white/5 py-1.5 rounded-lg">
+        <div>ចន្ទ (Mon)</div><div>អង្គារ (Tue)</div><div>ពុធ (Wed)</div><div>ព្រហ (Thu)</div><div>សុក្រ (Fri)</div><div>សៅរ៍ (Sat)</div><div>អាទិត្យ (Sun)</div>
+      </div>
+      <div id="calendar"></div>
+    </div>
+  </div>
+
+  <div class="glass rounded-2xl p-5">
+    <div class="flex items-center gap-2 mb-3 text-sky-400">
+      <i class="fa-regular fa-bell text-lg"></i>
+      <h3 class="font-bold text-base md:text-lg">ប្រព័ន្ធជូនដំណឹង និងសកម្មភាពថ្មីៗ (Activity Log)</h3>
+    </div>
+    <div class="bg-black/20 rounded-xl p-3 max-h-[160px] overflow-y-auto text-xs space-y-2 border border-white/5" id="notificationCenterList"></div>
+  </div>
+</div>
+
+<footer class="w-full text-center py-4 text-xs text-white/60 bg-black/30 backdrop-blur-md border-t border-white/5 mt-auto">
+  <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-2">
+    <p><i class="fa-solid fa-bolt text-amber-400 animate-pulse"></i> Loaded successfully.</p>
+    <p class="font-medium text-indigo-200">👨‍💻 Developed with ❤️ by <span class="text-white font-bold hover:underline cursor-pointer">បារាំង ភក្ត្រា</span></p>
+    <p class="bg-white/10 px-2.5 py-0.5 rounded text-[10px] font-mono tracking-wider border border-white/10">v3.8 (Lightweight)</p>
+  </div>
+</footer>
 
 <script>
+// ==========================================
+// 🛡️ SECURE CONFIGURATION & CONSTANTS
+// ==========================================
 const TELEGRAM_CONFIG = {
   token: '8880912035:AAHyuxH72-wBdJ1W77bI5r61Y4HDt-Md1H8',
   chatId: '-1003502505377',
   apiUrl: 'https://api.telegram.org/bot'
 };
 
-let currentFormType = ""; 
+const START_DATE = new Date(2026, 5, 1); 
 
-function openRequestModal(type) {
-  currentFormType = type;
-  const modal = document.getElementById('requestModal');
-  const title = document.getElementById('modalTitle');
-  const desc = document.getElementById('modalDesc');
-  
-  document.getElementById('studentName').value = "";
-  document.getElementById('requestReason').value = "";
+const students = [
+  "ទន់ វីរៈ", "ទិតថា រាជ្យបណ្ឌិត", "ទុយ គុង (ទុយ តុង)", "ទុយ សាមាស (ទុយ សាម៉ាស់)", "ទុយ សុខលាភ",
+  "ទ្រី សេរីវិជ្ជា", "នន សុធារិទ្ធិ", "នាង អេនហ្គេល", "នាង អេនហ្គេល", "នុត ចំរើន",
+  "នូ ជាសំណាង", "នួន សំណាងតារា", "ប៉ាន ជតពិសិដ្ឋ", "ប៉ែន សំណាង", "ប៊ី ជុងសេង",
+  "ប៊ុណ្ណា ដាវីដ", "ប៊ូ ហង្សបូរី", "ប៊ួរ សុវណ្ណសិលា", "ប៊េ សុងហ័រ", "បាន ប៊ុនហ៊ាន",
+  "បាន សុងជូ", "បារាំង ភក្ត្រា", "ប្រាក់ ខេមា", "ប្រាក់ បញ្ញា", "ផន គ្រឹស្នា",
+  "ផល មង្គល", "ផាង បញ្ញា", "ផាត់ យិនប៊ី", "ផាត់ សុវណ្ណហេង", "ផុន សទ្ធា",
+  "ផុល សុផល", "ផេង គីមហុង", "ផេង សុខាឌីណា", "ពាង សុវិសា", "ពាន ប៊ុនលី",
+  "ពៅ មន្នីពេជ្រ", "ភន់ វាសនា", "ភួងផល សំណាង", "ម៉ក់ លីឈុន", "ម៉ម ប៊ុនវាសនា"
+];
 
-  if(type === 'leave') {
-    title.innerHTML = "<i class='fa-solid fa-file-signature text-red-400 mr-2'></i>ទម្រង់ស្នើសុំច្បាប់ (Leave)";
-    desc.textContent = "ព័ត៌មាននេះនឹងត្រូវបញ្ជូនទៅកាន់គ្រុប Telegram ថ្នាក់ដើម្បីឱ្យប្រធានថ្នាក់បានដឹង។";
-  } else if(type === 'late') {
-    title.innerHTML = "<i class='fa-regular fa-clock text-cyan-400 mr-2'></i>ទម្រង់សុំយឺត (Late Arrival)";
-    desc.textContent = "សូមផ្ដល់ដំណឹងជាមុន ប្រសិនបើប្អូនដឹងថានឹងត្រូវមកយឺតជាងម៉ោងកំណត់។";
+const QUOTES = [
+  "« ការអប់រំ គឺជាអាវុធដ៏មានឥទ្ធិពលបំផុត ដែលអ្នកអាចប្រើប្រាស់ដើម្បីផ្លាស់ប្តូរពិភពលោកបាន។ »",
+  "« កុំរង់ចាំឱកាសល្អ ប៉ុន្តែចូរបង្កើតវាដោយខ្លួនឯង។ »",
+  "« ការចាប់ផ្តើមគឺជាផ្នែកដ៏សំខាន់បំផុតនៃការងារ។ »",
+  "« ភាពជោគជ័យមិនមែនជាការចៃដន្យទេ វាជាការខិតខំប្រឹងប្រែង និងការរៀនសូត្រឥតឈប់ឈរ។ »",
+  "« ធ្វើរឿងដែលអ្នកស្រឡាញ់ ហើយស្រឡាញ់រឿងដែលអ្នកកំពុងធ្វើ។ »"
+];
+
+// ==========================================
+// 🚀 INITIALIZATION MODULE
+// ==========================================
+window.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  renderQuote();
+  updateClock();
+  updateStaticData();
+  renderWeeklyView();
+  renderUpcomingDays();
+  renderCalendar();
+  updateDashboardStats();
+  renderLeaderboard();
+  showUpdateModal(); 
+  logActivity("🚀 ប្រព័ន្ធ V3.8 (Lightweight Core) បានដំណើរការជោគជ័យ។", "success");
+});
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.body.classList.add('darkmode');
+    document.getElementById('themeIcon').className = "fa-solid fa-sun text-yellow-400";
+  } else {
+    document.body.classList.remove('darkmode');
+    document.getElementById('themeIcon').className = "fa-solid fa-moon text-indigo-300";
+  }
+}
+
+function toggleDarkMode() {
+  document.body.classList.toggle('darkmode');
+  const isDark = document.body.classList.contains('darkmode');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeIcon').className = isDark ? "fa-solid fa-sun text-yellow-400" : "fa-solid fa-moon text-indigo-300";
+  logActivity(`🌓 បានប្តូរទៅកាន់មុខងារ ${isDark ? 'Dark Mode' : 'Light Mode'}`, "info");
+}
+
+// ==========================================
+// 🚀 UPDATE MODAL LOGIC (WHAT'S NEW)
+// ==========================================
+function showUpdateModal() {
+  const modal = document.getElementById('updateModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+}
+
+function closeUpdateModal() {
+  const modal = document.getElementById('updateModal');
+  if (modal) {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+  logActivity("ℹ️ និស្សិតបានចូលមកកាន់ទំព័រស្វាគមន៍រួចរាល់។", "info");
+}
+
+// ==========================================
+// 🤖 AI SMART OPTIMIZER SYSTEM
+// ==========================================
+function runAISmartOptimizer() {
+  let activeDuty = getDuty(new Date());
+  if(activeDuty.includes("សម្រាក")) {
+    document.getElementById('aiSuggestionBox').classList.remove('hidden');
+    document.getElementById('aiSuggestionBox').innerHTML = `🤖 <b>AI Recommendation:</b> ថ្ងៃនេះជាថ្ងៃសម្រាក! ពុំចាំបាច់ដូរវេនឡើយ。`;
+    return;
   }
   
+  let currentPair = activeDuty.split(" & ");
+  let idealCandidate = students[students.length - 1];
+  for(let i=0; i<students.length; i++) {
+    let currentCnt = parseInt(localStorage.getItem(`checkin_cnt_${students[i]}`) || 0);
+    if(currentCnt === 0 && !currentPair.includes(students[i])) {
+      idealCandidate = students[i];
+      break;
+    }
+  }
+  
+  document.getElementById('aiSuggestionBox').classList.remove('hidden');
+  document.getElementById('aiSuggestionBox').innerHTML = `🤖 <b>AI Recommendation:</b> ដៃគូដែលសមស្របបំផុតសម្រាប់ការស្នើសុំដូរវេនគឺ <b>${idealCandidate}</b>。`;
+  document.getElementById('yourName').value = currentPair[0];
+  document.getElementById('targetName').value = idealCandidate;
+  logActivity("🤖 AI បានគណនារកដៃគូដូរវេនដ៏សមស្របបំផុតជូនអ្នករួចរាល់", "info");
+}
+
+// ==========================================
+// 👤 INDIVIDUAL POPUP MODAL ENGINE
+// ==========================================
+function openStudentProfile(name) {
+  let count = parseInt(localStorage.getItem(`checkin_cnt_${name}`) || 0);
+  let medal = "None ❌";
+  if(count >= 3) medal = "🥉 Bronze Certificate";
+  if(count >= 5) medal = "🥈 Silver Expert";
+  if(count >= 10) medal = "🥇 Gold Leader";
+  if(count >= 20) medal = "👑 Slide Master King";
+  
+  document.getElementById('profName').textContent = name;
+  document.getElementById('profCount').textContent = `${count} ដង`;
+  document.getElementById('profMedal').textContent = medal;
+  document.getElementById('profPunctuality').textContent = count > 0 ? "100% (Excellent)" : "98% (Normal)";
+  
+  let modal = document.getElementById('profileModal');
   modal.classList.remove('hidden');
   modal.classList.add('flex');
 }
 
-function closeModal() {
-  const modal = document.getElementById('requestModal');
-  modal.classList.remove('flex');
-  modal.classList.add('hidden');
-}
-
-// 🔔 Premium Native Toast System
-function showToast(message, type = "success") {
-  const container = document.getElementById('toastContainer');
-  const toast = document.createElement('div');
-  
-  toast.className = `p-4 rounded-2xl border backdrop-blur-xl shadow-2xl flex items-center gap-3 pointer-events-auto transition-all duration-300 opacity-0 transform translate-y-2 pointer-events-none`;
-  
-  if (type === "success") {
-    toast.classList.add('bg-emerald-950/80', 'border-emerald-500/30', 'text-emerald-200');
-    toast.innerHTML = `<div class="w-7 h-7 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400"><i class="fa-solid fa-circle-check"></i></div> <div class="text-xs font-medium flex-1">${message}</div>`;
-  } else {
-    toast.classList.add('bg-rose-950/80', 'border-rose-500/30', 'text-rose-200');
-    toast.innerHTML = `<div class="w-7 h-7 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400"><i class="fa-solid fa-triangle-exclamation"></i></div> <div class="text-xs font-medium flex-1">${message}</div>`;
-  }
-  
-  container.appendChild(toast);
-  
-  setTimeout(() => {
-    toast.classList.remove('opacity-0', 'translate-y-2');
-    toast.classList.add('opacity-100', 'translate-y-0');
-  }, 50);
-
-  setTimeout(() => {
-    toast.classList.remove('opacity-100', 'translate-y-0');
-    toast.classList.add('opacity-0', 'translate-y-[-10px]');
-    setTimeout(() => toast.remove(), 300);
-  }, 4000);
-}
-
-function submitRequestToTelegram() {
-  const name = document.getElementById('studentName').value.trim();
-  const reason = document.getElementById('requestReason').value.trim();
-  
-  if(!name || !reason) {
-    showToast("សូមបំពេញឈ្មោះ និងមូលហេតុឱ្យបានគ្រប់ជ្រុងជ្រោយបាទ!", "error");
-    return;
-  }
-  
-  let typeTitle = currentFormType === 'leave' ? "📝 [ពាក្យសុំច្បាប់សម្រាក]" : "⏳ [ការជូនដំណឹងមកយឺត]";
-  let statusEmoji = currentFormType === 'leave' ? "❌ អវត្តមានដោយមានច្បាប់" : "⚠️ មកយឺត (មានធុរៈ)";
-  
+// ==========================================
+// 🔗 SHARE & COOPERATION MODS
+// ==========================================
+function shareViaWebAPI() {
   let now = new Date();
-  let dateStr = now.toLocaleDateString('kh-KH', { day: 'numeric', month: 'long', year: 'numeric' });
-  let timeStr = now.toLocaleTimeString('kh-KH', { hour: '2-digit', minute: '2-digit' });
+  let textStr = `📢 វេនយកស្លាយថ្នាក់ ITE A3 ថ្ងៃនេះ៖\n⭐ ${getDuty(now)}`;
+  if (navigator.share) {
+    navigator.share({ title: 'ITE A3 - វេនយកស្លាយ', text: textStr, url: window.location.href }).catch(console.error);
+  } else {
+    copyDutyInfo();
+  }
+}
 
-  let textMessage = `🔔 <b>${typeTitle}</b>\n\n`;
-  textMessage += `👤 និស្សិត៖ <b>${name}</b>\n`;
-  textMessage += `🎯 ស្ថានភាព៖ <b>${statusEmoji}</b>\n`;
-  textMessage += `ℹ️ មូលហេតុ៖ "${reason}"\n\n`;
-  textMessage += `📅 កាលបរិច្ឆេទ៖ ថ្ងៃទី ${dateStr}\n`;
-  textMessage += `⏰ ម៉ោងផ្ញើ៖ ម៉ោង ${timeStr}`;
+function closeProfileModal() {
+  let modal = document.getElementById('profileModal');
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+}
 
-  const url = `${TELEGRAM_CONFIG.apiUrl}${TELEGRAM_CONFIG.token}/sendMessage`;
-  
-  fetch(url, {
+// ==========================================
+// ⚖️ SLIDE CALCULATOR ALGORITHM
+// ==========================================
+function workingDaysUntil(targetDate) {
+  let start = new Date(START_DATE.getTime());
+  let end = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+  if (end < start) return 0; 
+  let count = 0;
+  while (start <= end) {
+    let dayOfWeek = start.getDay();
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) count++;
+    start.setDate(start.getDate() + 1);
+  }
+  return count;
+}
+
+// ==========================================
+// 📊 STATS & LOGIC MODULES
+// ==========================================
+function getDuty(date) {
+  let dayOfWeek = date.getDay();
+  if (dayOfWeek === 0) return "សម្រាក (ថ្ងៃអាទិត្យ)";
+  if (dayOfWeek === 6) return "សម្រាក (ថ្ងៃសៅរ៍)";
+  let wd = workingDaysUntil(date);
+  if (wd === 0) return "មិនទាន់មានទិន្នន័យ";
+  let idx = ((wd - 1) * 2) % students.length;
+  let companionIdx = (idx + 1) % students.length;
+  return `${students[idx]} & ${students[companionIdx]}`;
+}
+
+function teamNumber(date) { return workingDaysUntil(date); }
+function fmt(d) { return d.toLocaleDateString('kh-KH', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }); }
+
+function getDateTimeKhString() {
+  const now = new Date();
+  return `📅 ថ្ងៃទី៖ <b>${now.toLocaleDateString('kh-KH')}</b>\n⏰ ម៉ោង៖ <b>${now.toLocaleTimeString('kh-KH')}</b>`;
+}
+
+function sendToTelegramAPI(textMessage, isSilent = false) {
+  if (!textMessage.trim()) return;
+  fetch(`${TELEGRAM_CONFIG.apiUrl}${TELEGRAM_CONFIG.token}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: TELEGRAM_CONFIG.chatId, text: textMessage, parse_mode: 'HTML' })
-  })
-  .then(res => {
-    if(res.ok) {
-      showToast("🚀 បានបញ្ជូនព័ត៌មានទៅកាន់ Telegram ថ្នាក់រៀនរួចរាល់ហើយ!", "success");
-      closeModal();
-    } else {
-      showToast("❌ មានបញ្ហាក្នុងការផ្ញើ! សូមព្យាយាមម្តងទៀត។", "error");
+    body: JSON.stringify({ chat_id: TELEGRAM_CONFIG.chatId, text: textMessage, parse_mode: 'HTML', disable_notification: isSilent })
+  }).catch(err => console.error(err));
+}
+
+function updateSlideStatusUI() {
+  let now = new Date(), dayOfWeek = now.getDay();
+  let badge = document.getElementById('slideStatusBadge'), btnDone = document.getElementById('btnMarkDone'), btnReset = document.getElementById('btnResetDone');
+
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    badge.className = "text-[11px] font-bold px-2 py-0.5 rounded-full uppercase bg-gray-500 text-white shadow-sm";
+    badge.textContent = "ថ្ងៃសម្រាក";
+    document.getElementById('actionStatusArea').classList.add('hidden');
+    return;
+  }
+
+  document.getElementById('actionStatusArea').classList.remove('hidden');
+  let isDone = localStorage.getItem(getTodayKey()) === "true";
+
+  if (isDone) {
+    badge.className = "text-[11px] font-bold px-2 py-0.5 rounded-full uppercase bg-emerald-500 text-white shadow-sm";
+    badge.textContent = "✅ រួចរាល់ហើយ!";
+    btnDone.disabled = true;
+    btnDone.className = "w-full py-2.5 px-2 bg-gray-600/50 text-gray-400 text-xs font-bold rounded-xl cursor-not-allowed text-center";
+    btnDone.innerHTML = "<i class='fa-solid fa-lock'></i> បានបញ្ជាក់រួចហើយ";
+    btnReset.classList.remove('hidden');
+  } else {
+    badge.className = "text-[11px] font-bold px-2 py-0.5 rounded-full uppercase bg-amber-500 text-white shadow-sm";
+    badge.textContent = "⏳ មិនទាន់យក";
+    btnDone.disabled = false;
+    btnDone.className = "w-full touch-target py-2.5 px-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 active:scale-95 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1 shadow-md";
+    btnDone.innerHTML = "<i class='fa-regular fa-circle-check'></i> បញ្ជាក់ថាបានយកស្លាយរួចរាល់";
+    btnReset.classList.add('hidden');
+  }
+}
+
+function getTodayKey() {
+  let today = new Date();
+  return `slide_done_${today.getFullYear()}_${today.getMonth()}_${today.getDate()}`;
+}
+
+function markAsDone() {
+  let now = new Date(), duty = getDuty(now);
+  if(confirm(`តើប្អូនចង់បញ្ជាក់ថាគូរបស់៖\n👉 ${duty}\nបានយកស្លាយរួចរាល់មែនទេ?`)) {
+    localStorage.setItem(getTodayKey(), "true");
+    if(duty.includes("&")) {
+      duty.split(" & ").forEach(name => {
+        let cnt = parseInt(localStorage.getItem(`checkin_cnt_${name}`) || 0);
+        localStorage.setItem(`checkin_cnt_${name}`, cnt + 1);
+      });
     }
-  })
-  .catch(err => {
-    console.error(err);
-    showToast("❌ មិនអាចភ្ជាប់ទៅកាន់ប្រព័ន្ធបានទេ!", "error");
+    updateSlideStatusUI(); updateDashboardStats(); renderLeaderboard(); renderCalendar();
+    sendToTelegramAPI(`✅ <b>[ប្រព័ន្ធគ្រប់គ្រងវេន]</b>\n\nស្លាយត្រូវបានយកដោយគូ៖\n⭐ <b>${duty}</b>\n\n${getDateTimeKhString()}`);
+    logActivity(`✅ បានបញ្ជាក់វេន៖ ${duty}`, "success");
+  }
+}
+
+function resetDoneStatus() {
+  if(confirm("ប្ដូរស្ថានភាពមកជា «មិនទាន់យក» វិញ?")) {
+    localStorage.removeItem(getTodayKey());
+    let now = new Date(), duty = getDuty(now);
+    if(duty.includes("&")) {
+      duty.split(" & ").forEach(name => {
+        let cnt = parseInt(localStorage.getItem(`checkin_cnt_${name}`) || 0);
+        if(cnt > 0) localStorage.setItem(`checkin_cnt_${name}`, cnt - 1);
+      });
+    }
+    updateSlideStatusUI(); updateDashboardStats(); renderLeaderboard(); renderCalendar();
+    logActivity(`⚠️ បានលុបការបញ្ជាក់ស្ថានភាពវេនថ្ងៃនេះវិញ`, "warning");
+  }
+}
+
+function updateDashboardStats() {
+  let total = 0;
+  students.forEach(name => total += parseInt(localStorage.getItem(`checkin_cnt_${name}`) || 0));
+  document.getElementById('statTotalCheckins').textContent = `${total} ដង`;
+  
+  let now = new Date(), duty = getDuty(now), activeStudent = students[0];
+  if(duty.includes("&")) activeStudent = duty.split(" & ")[0];
+  let userCount = parseInt(localStorage.getItem(`checkin_cnt_${activeStudent}`) || 0);
+  
+  document.getElementById('badgeBronze').classList.add('opacity-40');
+  document.getElementById('badgeSilver').classList.add('opacity-40');
+  document.getElementById('badgeGold').classList.add('opacity-40');
+  document.getElementById('badgeMaster').classList.add('opacity-40');
+
+  if(userCount >= 3) document.getElementById('badgeBronze').classList.remove('opacity-40');
+  if(userCount >= 5) document.getElementById('badgeSilver').classList.remove('opacity-40');
+  if(userCount >= 10) document.getElementById('badgeGold').classList.remove('opacity-40');
+  if(userCount >= 20) document.getElementById('badgeMaster').classList.remove('opacity-40');
+
+  document.getElementById('statMonthlyCount').textContent = `${new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()} ថ្ងៃ`;
+}
+
+function renderLeaderboard() {
+  let list = [];
+  students.forEach(name => list.push({ name: name, count: parseInt(localStorage.getItem(`checkin_cnt_${name}`) || 0) }));
+  list.sort((a, b) => b.count - a.count);
+  
+  let html = "";
+  list.slice(0, 5).forEach((item, index) => {
+    let medal = index === 0 ? "👑" : index === 1 ? "🥈" : index === 2 ? "🥉" : "👤";
+    html += `
+      <div onclick="openStudentProfile('${item.name}')" class="flex justify-between items-center bg-white/5 hover:bg-white/10 py-1.5 px-3 rounded-xl border border-white/5 text-xs cursor-pointer transition">
+        <span class="font-medium text-slate-200">${medal} ${index + 1}. ${item.name}</span>
+        <span class="bg-indigo-600/60 px-2 py-0.5 rounded-full font-bold text-emerald-300">${item.count} ដង</span>
+      </div>
+    `;
   });
+  document.getElementById('leaderboardList').innerHTML = html;
+}
+
+function updateClock() {
+  let now = new Date();
+  document.getElementById('clock').innerHTML = now.toLocaleTimeString('km-KH');
+  let target = new Date(); target.setHours(12, 30, 0, 0); 
+  if (now > target) target.setDate(target.getDate() + 1);
+  let diff = target - now;
+  let hours = Math.floor(diff / (1000 * 60 * 60)), mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)), secs = Math.floor((diff % (1000 * 60)) / 1000);
+  document.getElementById('countdown').textContent = `${hours} ម៉ោង ${mins} នាទី ${secs} វិនាទី`;
+}
+setInterval(updateClock, 1000);
+
+function updateStaticData() {
+  let now = new Date();
+  document.getElementById('todayDuty').innerHTML = getDuty(now);
+  if(now.getDay() !== 0 && now.getDay() !== 6 && workingDaysUntil(now) > 0) {
+    document.getElementById('teamNo').innerHTML = `<i class='fa-solid fa-hashtag'></i> លំដាប់ថ្ងៃវេនទី: <b>${teamNumber(now)}</b>`;
+  } else {
+    document.getElementById('teamNo').innerHTML = "<i class='fa-solid fa-calendar-day'></i> ថ្ងៃនេះថ្ងៃសម្រាក";
+  }
+  updateSlideStatusUI();
+}
+
+// ==========================================
+// 📋 AUXILIARY UTILITIES
+// ==========================================
+function copyDutyInfo() {
+  let now = new Date(), isDone = localStorage.getItem(getTodayKey()) === "true";
+  navigator.clipboard.writeText(`📢 វេនយកស្លាយថ្នាក់ ITE A3 ថ្ងៃនេះ៖\n⭐ ${getDuty(now)}\n📊 ស្ថានភាព៖ ${isDone ? "✅ រួចរាល់" : "⏳ មិនទាន់យក"}`).then(() => {
+    logActivity("📋 បានចម្លងព័ត៌មានវេនទៅ Clipboard", "info");
+    alert("📋 ចម្លងរួចរាល់!");
+  });
+}
+
+function shareToTelegram() {
+  let now = new Date();
+  sendToTelegramAPI(`📢 <b>[រំលឹកវេនយកស្លាយ]</b>\n\n⭐ ថ្ងៃនេះ៖ <b>${getDuty(now)}</b>\n\n⏳ កុំភ្លេចរៀបចំឱ្យរួចរាល់មុនម៉ោងចូលរៀន!`);
+  logActivity("✈️ បានផ្ញើសាររំលឹកទៅកាន់គ្រុប Telegram", "info");
+}
+
+function addToGoogleCalendar() {
+  let now = new Date(), title = encodeURIComponent("⏰ វេនយកស្លាយថ្នាក់ ITE A3");
+  let url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}T123000/${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}T143000&sf=true&output=xml`;
+  window.open(url, '_blank');
+}
+
+function requestSwap() {
+  let mine = document.getElementById('yourName').value.trim(), target = document.getElementById('targetName').value.trim();
+  if(!mine || !target) { alert("សូមបំពេញឈ្មោះសិនបាទ!"); return; }
+  sendToTelegramAPI(`🔄 <b>[ស្នើសុំដូរវេនគ្នា]</b>\n\nឈ្មោះ <b>${mine}</b> ចង់សុំដូរថ្ងៃវេនជាមួយ <b>${target}</b> តើបានទេបាទ? 🙏`);
+  logActivity(`🔄 ${mine} ស្នើសុំដូរវេនជាមួយ ${target}`, "warning");
+}
+
+function renderQuote() { document.getElementById('quoteDisplay').textContent = QUOTES[(new Date().getDate()) % QUOTES.length]; }
+
+function renderWeeklyView() {
+  let current = new Date(), currentDay = current.getDay(), distanceToMonday = currentDay === 0 ? -6 : 1 - currentDay;
+  let monday = new Date(current); monday.setDate(current.getDate() + distanceToMonday);
+  const khDays = ["ចន្ទ", "អង្គារ", "ពុធ", "ព្រហស្បតិ៍", "សុក្រ", "សៅរ៍"];
+  let html = "";
+  for(let i=0; i<6; i++) {
+    let day = new Date(monday); day.setDate(monday.getDate() + i);
+    let isToday = day.toDateString() === current.toDateString();
+    let shortDuty = getDuty(day).split(" & ");
+    html += `<div class="p-3 rounded-xl ${isToday ? 'border-2 border-amber-400 bg-indigo-600/50' : 'bg-white/5'} flex flex-col justify-between text-xs glass"><span class="font-bold text-indigo-300 mb-1 block">${khDays[i]} (${day.getDate()})</span><span class="font-medium text-white">${shortDuty.length > 1 ? `${shortDuty[0]}<br>& ${shortDuty[1]}` : getDuty(day)}</span></div>`;
+  }
+  document.getElementById('weeklySchedule').innerHTML = html;
+}
+
+function renderUpcomingDays() {
+  let upcomingElement = document.getElementById('upcoming');
+  upcomingElement.innerHTML = "";
+  for (let i = 1; i <= 7; i++) {
+    let d = new Date(); d.setDate(d.getDate() + i);
+    upcomingElement.innerHTML += `<li class="py-2 flex justify-between items-center text-xs md:text-sm border-b border-white/5 last:border-0"><span class="text-slate-300 font-light">${fmt(d)}</span> <span class="font-semibold text-indigo-200">➜ ${getDuty(d)}</span></li>`;
+  }
+}
+
+document.getElementById('datePick').onchange = e => {
+  if (!e.target.value) return;
+  let parts = e.target.value.split('-');
+  let d = new Date(parts[0], parts[1] - 1, parts[2]);
+  let resultElement = document.getElementById('dateResult');
+  resultElement.classList.remove('hidden');
+  resultElement.innerHTML = `លទ្ធផល៖ <span class="text-emerald-400 font-bold">${getDuty(d)}</span>`;
+}
+
+document.getElementById('studentSearch').oninput = e => {
+  let s = e.target.value.trim().toLowerCase();
+  let resultElement = document.getElementById('studentResult');
+  if (!s) { resultElement.classList.add('hidden'); return; }
+  resultElement.classList.remove('hidden');
+  let foundHTML = "<span class='text-red-400'>រកមិនឃើញឈ្មោះទេ!</span>";
+  for (let i = 0; i < 90; i++) {
+    let d = new Date(); d.setDate(d.getDate() + i);
+    if (getDuty(d).toLowerCase().includes(s)) { foundHTML = `<b>${getDuty(d)}</b> <br><span class='text-xs text-slate-400'>ថ្ងៃទី៖ ${fmt(d)}</span>`; break; }
+  }
+  resultElement.innerHTML = foundHTML;
+}
+
+function renderCalendar() {
+  let d = new Date(), y = d.getFullYear(), m = d.getMonth();
+  let firstDay = new Date(y, m, 1).getDay(), adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1, days = new Date(y, m + 1, 0).getDate();
+  let html = "<div class='grid grid-cols-7 gap-1'>";
+  for (let j = 0; j < adjustedFirstDay; j++) html += `<div class='p-1 bg-transparent'></div>`;
+  for (let i = 1; i <= days; i++) {
+    let currentCheck = new Date(y, m, i), dayOfWeek = currentCheck.getDay(), isWeekend = (dayOfWeek === 0 || dayOfWeek === 6), isToday = currentCheck.toDateString() === d.toDateString();
+    let isCompleted = localStorage.getItem(`slide_done_${y}_${m}_${i}`) === "true";
+    let bgClass = isWeekend ? 'bg-red-500/10 text-red-300' : 'bg-white/5 hover:bg-white/15';
+    if (isCompleted) bgClass = 'bg-emerald-600/50 text-emerald-200';
+    if (isToday) bgClass = 'bg-indigo-600 font-bold border-2 border-indigo-400';
+    html += `<div class='p-2 text-center rounded-xl text-xs ${bgClass} cursor-pointer group relative' title="${getDuty(currentCheck)}">${i}</div>`;
+  }
+  document.getElementById('calendar').innerHTML = html + "</div>";
+}
+
+function logActivity(message, type = "info") {
+  const container = document.getElementById('notificationCenterList');
+  let color = type === "success" ? "text-emerald-400" : type === "warning" ? "text-amber-400" : "text-sky-400";
+  container.insertAdjacentHTML('afterbegin', `<div class="flex gap-1 border-b border-white/5 pb-1"><span class="${color}">[${new Date().toLocaleTimeString('km-KH', {hour:'2-digit', minute:'2-digit'})}]</span> <span class="text-slate-300">${message}</span></div>`);
 }
 </script>
 </body>
