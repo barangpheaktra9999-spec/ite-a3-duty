@@ -75,21 +75,6 @@
   </div>
 </div>
 
-<div id="telegramNoticeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md hidden animate-fade-in">
-  <div class="glass max-w-sm w-full p-6 rounded-2xl text-center shadow-2xl border border-white/20">
-    <div class="w-16 h-16 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl animate-pulse">
-      🤖
-    </div>
-    <h3 class="text-lg font-bold mb-2 text-blue-400">Telegram Bot មិនទាន់ដំណើរការ</h3>
-    <p class="text-xs leading-relaxed text-white/80 mb-6">
-      មុខងារតភ្ជាប់ជាមួយ Telegram មួយនេះ កំពុងត្រូវបានបង្កើត និងរៀបចំកូដដោយ <span class="text-amber-400 font-semibold">Barang Pheaktra</span>។ សូមត្រលប់មកពិនិត្យមើលម្តងទៀតនៅពេលក្រោយ! 🛠️
-    </p>
-    <button onclick="closeTelegramModal()" class="w-full py-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 font-medium rounded-xl transition active:scale-95 text-xs text-white">
-      បិទផ្ទាំងនេះ
-    </button>
-  </div>
-</div>
-
 <div class="max-w-6xl mx-auto w-full mb-10">
   
   <div class="text-center mb-6">
@@ -119,20 +104,33 @@
 
     <div class="glass rounded-2xl p-5 flex flex-col justify-between">
       <div>
-        <h3 class="font-bold text-lg md:text-xl mb-1">⭐ វេនយកស្លាយថ្ងៃនេះ</h3>
+        <div class="flex justify-between items-start">
+          <h3 class="font-bold text-lg md:text-xl mb-1">⭐ វេនយកស្លាយថ្ងៃនេះ</h3>
+          <span id="slideStatusBadge" class="text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider"></span>
+        </div>
         <div id="todayDuty" class="text-base md:text-lg font-semibold text-emerald-400 mb-2"></div>
       </div>
+      
       <div class="grid grid-cols-1 gap-2 mt-2">
-        <div class="flex gap-2">
-          <button onclick="copyDutyInfo()" class="flex-1 py-2 px-2 bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
-            📋 ចម្លងព័ត៌មាន
+        <div id="actionStatusArea" class="grid grid-cols-1 gap-1">
+          <button id="btnMarkDone" onclick="markAsDone()" class="w-full py-2 px-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 active:scale-95 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1 shadow-md">
+            ✅ បញ្ជាក់ថាបានយកស្លាយរួចរាល់
           </button>
-          <button onclick="shareToTelegram()" class="flex-1 py-2 px-2 bg-sky-600 hover:bg-sky-700 active:scale-95 text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
-            ✈️ រំលឹកក្នុង Telegram
+          <button id="btnResetDone" onclick="resetDoneStatus()" class="w-full text-[11px] text-red-400 hover:underline transition hidden">
+            ✖️ ច្រឡំ? ដាក់ថា «មិនទាន់យក» វិញ
           </button>
         </div>
-        <button onclick="addToGoogleCalendar()" class="w-full py-2 px-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
-          📅 Add to Google Calendar
+
+        <div class="flex gap-2 border-t border-white/10 pt-2 mt-1">
+          <button onclick="copyDutyInfo()" class="flex-1 py-1.5 px-2 bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
+            📋 ចម្លង
+          </button>
+          <button onclick="shareToTelegram()" class="flex-1 py-1.5 px-2 bg-sky-600 hover:bg-sky-700 active:scale-95 text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
+            ✈️ រំលឹកថ្នាក់
+          </button>
+        </div>
+        <button onclick="addToGoogleCalendar()" class="w-full py-1.5 px-2 bg-slate-700 hover:bg-slate-600 active:scale-95 text-xs font-medium rounded-xl transition flex items-center justify-center gap-1">
+          📅 Add to Calendar
         </button>
       </div>
     </div>
@@ -140,7 +138,7 @@
     <div class="glass rounded-2xl p-5 flex flex-col justify-between">
       <h3 class="font-bold text-lg md:text-xl mb-1">📊 ស្ថិតិរួម</h3>
       <div>
-        <p class="text-sm md:text-base">និស្សិតសរុប: 27 នាក់</p>
+        <p class="text-sm md:text-base">និស្សិតសរុប: 40 នាក់</p>
         <p id="teamNo" class="text-sm md:text-base font-medium text-emerald-400"></p>
       </div>
     </div>
@@ -176,7 +174,7 @@
     </div>
     <div class="glass rounded-2xl p-5">
       <h3 class="font-bold text-lg md:text-xl mb-2">👨‍🎓 ស្វែងរកឈ្មោះនិស្សិត</h3>
-      <input id="studentSearch" placeholder="ឧទាហរណ៍៖ បារាំង ភក្ត្រា" class="text-black p-2.5 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+      <input id="studentSearch" placeholder="ឧទាហរណ៍៖ ទន់ វីរៈ" class="text-black p-2.5 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
       <p id="studentResult" class="mt-3 text-sm md:text-base font-medium bg-white/5 p-2 rounded-lg hidden"></p>
     </div>
   </div>
@@ -196,28 +194,53 @@
   <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-2">
     <p>⚡ Code used for educational purposes</p>
     <p class="font-medium text-indigo-200">👨‍💻 Developed by <span class="text-white font-semibold">Barang Pheaktra</span></p>
-    <p class="bg-white/10 px-2 py-0.5 rounded text-[11px]">Version 1.5</p>
+    <p class="bg-white/10 px-2 py-0.5 rounded text-[11px]">Version 2.6</p>
   </div>
 </footer>
 
 <script>
-// Logic សម្រាប់គ្រប់គ្រងការបិទផ្ទាំងលោត (Modal)
 function closeBetaModal() {
   document.getElementById('betaModal').style.display = 'none';
 }
 
-function closeTelegramModal() {
-  document.getElementById('telegramNoticeModal').classList.add('hidden');
+// ==========================================
+// 🚀 ផ្នែកគ្រប់គ្រង TELEGRAM BOT API
+// ==========================================
+const BOT_TOKEN = '8880912035:AAHyuxH72-wBdJ1W77bI5r61Y4HDt-Md1H8';
+const CHAT_ID = '-1003502505377'; // លេខគ្រុបធំថ្នាក់ A3 ដែលបានប្ដូររួចរាល់ ✅
+
+function sendToTelegramAPI(textMessage, isSilent = false) {
+  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+  
+  fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: CHAT_ID,
+      text: textMessage,
+      parse_mode: 'HTML',
+      disable_notification: isSilent
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(!data.ok) console.error("Telegram API Error: " + data.description);
+  })
+  .catch(err => console.error(err));
 }
 
-// បញ្ជីឈ្មោះនិស្សិត (២៧ នាក់ - លំដាប់លេខ ៧ កែប្រែតាមការណែនាំ)
+// ==========================================
+// 📅 ផ្នែកគ្រប់គ្រងទិន្នន័យវេន (៤០ នាក់តាមអក្ខរក្រម)
+// ==========================================
 const students = [
-  "ទន់ វីរៈ", "ទិតថា រាជ្យបណ្ឌិត", "ទុយ សាមាស", "ទុយ តុង", "ទុយ សុខលាភ",
+  "ទន់ វីរៈ", "ទិតថា រាជ្យបណ្ឌិត", "ទុយ គុង (ទុយ តុង)", "ទុយ សាមាស (ទុយ សាម៉ាស់)", "ទុយ សុខលាភ",
   "ទ្រី សេរីវិជ្ជា", "នន សុធារិទ្ធិ", "នាង អេនហ្គេល", "នី គីមឃាង", "នុត ចំរើន",
-  "នូ ជាសំណាង", "ប៉ាន ជតពិសិដ្ឋ", "ប៉ែន សំណាង", "ប៊ី ជុងសេង", "ប៊ុណ្ណា ដាវីដ",
-  "ប៊ូ ហង្សបូរី", "ប៊ួរ សុវណ្ណសិលា", "ប៊េ សុងហ័រ", "បាន ប៊ុនយ៉ាន", "បាន សុងជូ",
-  "បារាំង​ ភក្ត្រា", "ប្រាក់ ខេមា", "ប្រាក់ បញ្ញា", "ផន គ្រឹស្នា", "ផល មង្គល",
-  "ផាង បញ្ញា", "ផាត់ យិនប៉"
+  "នូ ជាសំណាង", "នួន សំណាងតារា", "ប៉ាន ជតពិសិដ្ឋ", "ប៉ែន សំណាង", "ប៊ី ជុងសេង",
+  "ប៊ុណ្ណា ដាវីដ", "ប៊ូ ហង្សបូរី", "ប៊ួរ សុវណ្ណសិលា", "ប៊េ សុងហ័រ", "បាន ប៊ុនហ៊ាន",
+  "បាន សុងជូ", "បារាំង ភក្រ្តា", "ប្រាក់ ខេមា", "ប្រាក់ បញ្ញា", "ផន គ្រឹស្នា",
+  "ផល មង្គល", "ផាង បញ្ញា", "ផាត់ យិនប៊ី", "ផាត់ សុវណ្ណហេង", "ផុន សទ្ធា",
+  "ផុល សុផល", "ផេង គីមហុង", "ផេង សុខាឌីណា", "ពាង សុវិសា", "ពាន ប៊ុនលី",
+  "ពៅ មន្នីពេជ្រ", "ភន់ វាសនា", "ភួងផល សំណាង", "ម៉ក់ លីឈុន", "ម៉ម ប៊ុនវាសនា"
 ];
 
 const START_DATE = new Date(2026, 5, 1); 
@@ -228,16 +251,23 @@ function workingDaysUntil(targetDate) {
   if (end < start) return 0; 
   let count = 0;
   while (start <= end) {
-    if (start.getDay() !== 0) count++;
+    let dayOfWeek = start.getDay();
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) { 
+      count++;
+    }
     start.setDate(start.getDate() + 1);
   }
   return count;
 }
 
 function getDuty(date) {
-  if (date.getDay() === 0) return "សម្រាក (ថ្ងៃអាទិត្យ)";
+  let dayOfWeek = date.getDay();
+  if (dayOfWeek === 0) return "សម្រាក (ថ្ងៃអាទិត្យ)";
+  if (dayOfWeek === 6) return "សម្រាក (ថ្ងៃសៅរ៍)";
+  
   let wd = workingDaysUntil(date);
   if (wd === 0) return "មិនទាន់មានទិន្នន័យ";
+  
   let idx = ((wd - 1) * 2) % students.length;
   let companionIdx = (idx + 1) % students.length;
   return students[idx] + " & " + students[companionIdx];
@@ -245,6 +275,14 @@ function getDuty(date) {
 
 function teamNumber(date) { return workingDaysUntil(date); }
 function fmt(d) { return d.toLocaleDateString('kh-KH', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }); }
+
+// Helper សម្រាប់ទាញយកថ្ងៃខែឆ្នាំ និងម៉ោងបច្ចុប្បន្នជាទម្រង់ខ្មែរស្អាត
+function getDateTimeKhString() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('kh-KH', { day: 'numeric', month: 'long', year: 'numeric' });
+  const timeStr = now.toLocaleTimeString('kh-KH', { hour: '2-digit', minute: '2-digit' });
+  return `📅 ថ្ងៃទី៖ <b>${dateStr}</b>\n⏰ ម៉ោង៖ <b>${timeStr}</b>`;
+}
 
 const clock = document.getElementById('clock');
 const todayDuty = document.getElementById('todayDuty');
@@ -258,7 +296,75 @@ const studentSearch = document.getElementById('studentSearch');
 const studentResult = document.getElementById('studentResult');
 const calendar = document.getElementById('calendar');
 
-// LIVE CLOCK & COUNTDOWN (ម៉ោង ១២:៣០ ថ្ងៃត្រង់)
+// ==========================================
+// 🔄 មុខងារគ្រប់គ្រងស្ថានភាព «យកស្លាយរួច» (CHECK-IN)
+// ==========================================
+function getTodayKey() {
+  let today = new Date();
+  return "slide_done_" + today.getFullYear() + "_" + today.getMonth() + "_" + today.getDate();
+}
+
+function updateSlideStatusUI() {
+  let now = new Date();
+  let dayOfWeek = now.getDay();
+  let badge = document.getElementById('slideStatusBadge');
+  let btnDone = document.getElementById('btnMarkDone');
+  let btnReset = document.getElementById('btnResetDone');
+
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    badge.className = "text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-gray-500 text-white";
+    badge.textContent = "ថ្ងៃសម្រាក";
+    document.getElementById('actionStatusArea').classList.add('hidden');
+    return;
+  }
+
+  document.getElementById('actionStatusArea').classList.remove('hidden');
+  let isDone = localStorage.getItem(getTodayKey()) === "true";
+
+  if (isDone) {
+    badge.className = "text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-emerald-500 text-white animate-pulse";
+    badge.textContent = "✅ រួចរាល់ហើយ!";
+    btnDone.disabled = true;
+    btnDone.className = "w-full py-2 px-2 bg-gray-600 text-gray-400 text-xs font-bold rounded-xl cursor-not-allowed text-center";
+    btnDone.textContent = "🔒 បានបញ្ជាក់ស្ថានភាពរួចហើយ";
+    btnReset.classList.remove('hidden');
+  } else {
+    badge.className = "text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-amber-500 text-white";
+    badge.textContent = "⏳ មិនទាន់យក";
+    btnDone.disabled = false;
+    btnDone.className = "w-full py-2 px-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 active:scale-95 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1 shadow-md";
+    btnDone.textContent = "✅ បញ្ជាក់ថាបានយកស្លាយរួចរាល់";
+    btnReset.classList.add('hidden');
+  }
+}
+
+function markAsDone() {
+  let now = new Date();
+  let duty = getDuty(now);
+  
+  if(confirm(`តើប្អូនចង់បញ្ជាក់ថាគូរបស់៖\n👉 ${duty}\nបានយកស្លាយរួចរាល់មែនទេ?`)) {
+    localStorage.setItem(getTodayKey(), "true");
+    updateSlideStatusUI();
+    
+    // 🌟 បន្ថែមម៉ោងនិងថ្ងៃខែចូលសារ Telegram
+    let text = `✅ <b>[ប្រព័ន្ធគ្រប់គ្រងវេន - រាយការណ៍]</b>\n\nស្លាយសម្រាប់ថ្ងៃនេះត្រូវបានយក និងរៀបចំរួចរាល់ហើយដោយគូរបស់៖\n⭐ <b>${duty}</b>\n\n${getDateTimeKhString()}\n\n<i>សូមមិត្តភក្តិទាំងអស់គ្នាត្រៀមខ្លួនចូលរៀន! ⚡</i>`;
+    sendToTelegramAPI(text);
+    alert("🚀 បានបញ្ជាក់ស្ថានភាព និងរាយការណ៍ទៅ Telegram រួចរាល់!");
+  }
+}
+
+function resetDoneStatus() {
+  if(confirm("តើប្អូនចង់ប្ដូរស្ថានភាពមកជា «មិនទាន់យក» វិញមែនទេ?")) {
+    localStorage.removeItem(getTodayKey());
+    updateSlideStatusUI();
+    
+    let now = new Date();
+    let text = `⚠️ <b>[កែតម្រូវស្ថានភាពស្លាយ]</b>\n\nស្ថានភាពវេនរបស់ <b>${getDuty(now)}</b> ត្រូវបានប្ដូរមកជា «មិនទាន់យក» វិញដោយសារមានការភាន់ច្រឡំ។\n\n${getDateTimeKhString()}`;
+    sendToTelegramAPI(text, true); 
+  }
+}
+
+// LIVE CLOCK & COUNTDOWN
 function updateClock() {
   let now = new Date();
   clock.innerHTML = now.toLocaleTimeString();
@@ -278,11 +384,13 @@ setInterval(updateClock, 1000);
 function updateStaticData() {
   let now = new Date();
   todayDuty.innerHTML = getDuty(now);
-  if(now.getDay() !== 0 && workingDaysUntil(now) > 0) {
+  let dayOfWeek = now.getDay();
+  if(dayOfWeek !== 0 && dayOfWeek !== 6 && workingDaysUntil(now) > 0) {
     teamNo.textContent = "លំដាប់ថ្ងៃវេនទី: " + teamNumber(now);
   } else {
-    teamNo.textContent = "ថ្ងៃនេះថ្ងៃសម្រាក";
+    teamNo.textContent = "ថ្ងៃនេះថ្ងៃសម្រាកចុងសប្ដាហ៍";
   }
+  updateSlideStatusUI();
 }
 updateClock();
 updateStaticData();
@@ -290,15 +398,24 @@ updateStaticData();
 // 📋 QUICK COPY
 function copyDutyInfo() {
   let now = new Date();
-  let textToCopy = `📢 វេនយកស្លាយថ្នាក់ ITE A3 ថ្ងៃនេះ៖\n⭐ ${getDuty(now)}\n🌐 លីងកាលវិភាគ៖ ${window.location.href}`;
+  let isDone = localStorage.getItem(getTodayKey()) === "true";
+  let statusStr = isDone ? "✅ រួចរាល់ហើយ!" : "⏳ មិនទាន់យក";
+  let textToCopy = `📢 វេនយកស្លាយថ្នាក់ ITE A3 ថ្ងៃនេះ៖\n⭐ ${getDuty(now)}\n📊 ស្ថានភាព៖ ${statusStr}\n🌐 លីងកាលវិភាគ៖ ${window.location.href}`;
   navigator.clipboard.writeText(textToCopy).then(() => {
     alert("📋 បានចម្លងព័ត៌មានវេនថ្ងៃនេះទៅក្នុង Clipboard រួចរាល់!");
   });
 }
 
-// ✈️ SHARE TO TELEGRAM (កែសម្រួល៖ លោតផ្ទាំងប្រាប់ថា Bot មិនទាន់ដំណើរការ)
+// ✈️ ប៊ូតុង៖ រំលឹកក្នុង TELEGRAM
 function shareToTelegram() {
-  document.getElementById('telegramNoticeModal').classList.remove('hidden');
+  let now = new Date();
+  let isDone = localStorage.getItem(getTodayKey()) === "true";
+  let statusStr = isDone ? "<b>✅ រួចរាល់ហើយ!</b>" : "<b>⏳ មិនទាន់យកនៅឡើយទេ</b>";
+  
+  // 🌟 បន្ថែមម៉ោងនិងថ្ងៃខែចូលសារ Telegram
+  let text = `📢 <b>[រំលឹកវេនយកស្លាយថ្នាក់ ITE A3]</b>\n\n⭐ ថ្ងៃនេះជាវេនរបស់៖ <b>${getDuty(now)}</b>\n📊 ស្ថានភាពស្លាយ៖ ${statusStr}\n\n${getDateTimeKhString()}\n\n⏳ កុំភ្លេចរៀបចំឱ្យបានរួចរាល់មុនម៉ោងចូលរៀនណា៎! ⚡`;
+  sendToTelegramAPI(text);
+  alert("✈️ បានផ្ញើសាររំលឹកទៅកាន់គ្រុប Telegram រួចរាល់បាទ!");
 }
 
 // 📅 ADD TO GOOGLE CALENDAR
@@ -319,16 +436,19 @@ function addToGoogleCalendar() {
   window.open(url, '_blank');
 }
 
-// 🔄 SWAP SHIFT REQUEST (កែសម្រួល៖ លោតផ្ទាំងប្រាប់ថា Bot មិនទាន់ដំណើរការ)
+// 🔄 ប៊ូតុង៖ ស្នើសុំដូរវេនគ្នា (Swap Shift Request)
 function requestSwap() {
   let mine = document.getElementById('yourName').value.trim();
   let target = document.getElementById('targetName').value.trim();
   if(!mine || !target) { alert("សូមបំពេញឈ្មោះទាំងសងខាងសិនបាទ!"); return; }
   
-  document.getElementById('telegramNoticeModal').classList.remove('hidden');
+  // 🌟 បន្ថែមម៉ោងនិងថ្ងៃខែចូលសារ Telegram
+  let text = `🔄 <b>[ស្នើសុំដូរវេនគ្នាថ្នាក់ A3]</b>\n\nជំរាបសួរមិត្តភក្តិទាំងអស់គ្នា! ខ្ញុំបាទ/នាងខ្ញុំឈ្មោះ <b>${mine}</b> ចង់សុំដូរថ្ងៃវេនយកស្លាយជាមួយមិត្តភក្តិឈ្មោះ <b>${target}</b> តើអាចសម្របសម្រួលដូរបានទេបាទ? 🙏\n\n${getDateTimeKhString()}`;
+  sendToTelegramAPI(text);
+  alert("📢 បានផ្ញើសារស្នើសុំដូរវេនទៅ Telegram រួចរាល់!");
 }
 
-// 🌤️ FETCH LIVE WEATHER FOR RUPP (Phnom Penh)
+// 🌤️ FETCH LIVE WEATHER
 function fetchWeather() {
   fetch(`https://api.open-meteo.com/v1/forecast?latitude=11.5683&longitude=104.8917&current_weather=true`)
     .then(res => res.json())
@@ -373,11 +493,14 @@ function renderWeeklyView() {
 renderWeeklyView();
 
 // UPCOMING 7 DAYS
-upcoming.innerHTML = "";
-for (let i = 1; i <= 7; i++) {
-  let d = new Date(); d.setDate(d.getDate() + i);
-  upcoming.innerHTML += `<li class="pt-2 flex justify-between items-center text-xs md:text-sm"><span>${fmt(d)}</span> <span class="font-medium text-indigo-200">➜ ${getDuty(d)}</span></li>`;
+function renderUpcomingDays() {
+  upcoming.innerHTML = "";
+  for (let i = 1; i <= 7; i++) {
+    let d = new Date(); d.setDate(d.getDate() + i);
+    upcoming.innerHTML += `<li class="pt-2 flex justify-between items-center text-xs md:text-sm"><span>${fmt(d)}</span> <span class="font-medium text-indigo-200">➜ ${getDuty(d)}</span></li>`;
+  }
 }
+renderUpcomingDays();
 
 // SEARCH FUNCTIONS
 datePick.onchange = e => {
@@ -413,10 +536,13 @@ function renderCalendar() {
   for (let j = 0; j < adjustedFirstDay; j++) html += `<div class='p-1 bg-transparent'></div>`;
   for (let i = 1; i <= days; i++) {
     let currentCheck = new Date(y, m, i);
-    let isSunday = currentCheck.getDay() === 0;
+    let dayOfWeek = currentCheck.getDay();
+    let isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
     let isToday = currentCheck.toDateString() === d.toDateString();
-    let bgClass = isSunday ? 'bg-red-500/20 text-red-300' : 'bg-white/10 hover:bg-white/20';
+    
+    let bgClass = isWeekend ? 'bg-red-500/20 text-red-300' : 'bg-white/10 hover:bg-white/20';
     if (isToday) bgClass = 'bg-indigo-600 font-bold border-2 border-white';
+    
     html += `<div class='border border-white/5 p-1 md:p-2 text-center rounded text-xs md:text-sm ${bgClass} cursor-pointer' title="${getDuty(currentCheck)}">${i}</div>`;
   }
   calendar.innerHTML = html + "</div>";
