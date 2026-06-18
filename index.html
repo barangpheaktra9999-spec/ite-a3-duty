@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <style>
     body {
       font-family: 'Kantumruy Pro', sans-serif;
@@ -41,8 +42,8 @@
       z-index: -1;
       animation: floatGlow 12s infinite alternate ease-in-out;
     }
-    .blob-1 { bg: rgba(6, 182, 212, 0.3); top: -10%; left: -10%; animation-delay: 0s; }
-    .blob-2 { bg: rgba(168, 85, 247, 0.3); bottom: -10%; right: -10%; animation-delay: 4s; }
+    .blob-1 { top: -10%; left: -10%; }
+    .blob-2 { bottom: -10%; right: -10%; }
 
     @keyframes floatGlow {
       0% { transform: translate(0, 0) scale(1); }
@@ -66,15 +67,14 @@
       transform: translateY(-6px) scale(1.01);
     }
 
-    /* 💫 Shimmer Effect for Header Line */
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
     .shimmer-line {
       background: linear-gradient(90deg, #6366f1, #a855f7, #06b6d4, #6366f1);
       background-size: 200% auto;
       animation: shimmer 4s linear infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
     }
 
     @keyframes modalEntrance {
@@ -84,6 +84,11 @@
     .animate-modal {
       animation: modalEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
+    .gradient-text {
+      background: linear-gradient(to right, #6366f1, #a855f7, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
   </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col justify-between p-4 md:p-8 relative">
@@ -92,125 +97,207 @@
   <div class="glow-blob blob-1 bg-cyan-500/20"></div>
   <div class="glow-blob blob-2 bg-purple-500/20"></div>
 
-  <header class="text-center max-w-3xl mx-auto mt-8 mb-4 space-y-4">
-    <div class="relative inline-block group">
-      <div class="absolute inset-0 bg-indigo-500 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition duration-500"></div>
-      <img src="https://www.rupp.edu.kh/assets/logo.svg" class="w-20 md:w-24 mx-auto relative drop-shadow-2xl transition-transform duration-500 group-hover:rotate-6" alt="RUPP Logo">
-    </div>
-    
-    <div class="space-y-1">
-      <h1 class="text-3xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-indigo-200">
-        ប្រព័ន្ធគ្រប់គ្រងថ្នាក់រៀន <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">ITE A3</span>
-      </h1>
-      <p class="text-[11px] md:text-xs tracking-widest text-indigo-300 font-medium uppercase bg-indigo-950/40 px-3 py-1 rounded-full inline-block border border-indigo-500/10 backdrop-blur-md">
-        ⚡ INFORMATION TECHNOLOGY & ENGINEERING • RUPP
-      </p>
-    </div>
-    <div class="w-32 h-1.5 shimmer-line mx-auto rounded-full shadow-lg shadow-indigo-500/20"></div>
-  </header>
-
-  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-3 max-w-sm w-full pointer-events-none"></div>
-
-  <div id="requestModal" class="fixed inset-0 z-50 items-center justify-center p-4 bg-slate-950/75 backdrop-blur-xl hidden transition-opacity duration-300">
-    <div class="premium-glass max-w-md w-full p-6 md:p-8 rounded-3xl shadow-2xl border border-white/10 animate-modal relative">
+  <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-2xl hidden">
+    <div class="premium-glass max-w-sm w-full p-8 rounded-3xl text-center shadow-2xl border border-white/10 animate-modal">
+      <div class="w-16 h-16 bg-indigo-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-indigo-400 text-2xl border border-indigo-500/20">
+        <i class="fa-solid fa-user-lock"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-white mb-2 tracking-tight">ប្រព័ន្ធផ្ទៀងផ្ទាត់និស្សិត</h2>
+      <p class="text-xs text-slate-400 mb-6">សូមបញ្ចូលលេខសម្ងាត់ថ្នាក់រៀនដើម្បីចូលទៅកាន់ ITE A3</p>
       
-      <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition duration-200 active:scale-90">
-        <i class="fa-solid fa-circle-xmark text-2xl"></i>
-      </button>
-      
-      <h3 id="modalTitle" class="text-xl md:text-2xl font-bold text-white tracking-tight">---</h3>
-      <p id="modalDesc" class="text-xs text-slate-400 mt-1 mb-6">---</p>
-      
-      <div class="space-y-4 text-left text-sm">
-        <div class="relative">
-          <label class="block text-xs font-semibold text-indigo-300 uppercase tracking-wider mb-1.5 ml-1">ឈ្មោះនិស្សិត</label>
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fa-solid fa-user text-xs"></i></span>
-            <input type="text" id="studentName" placeholder="ឧទាហរណ៍៖ បារាំង ភក្ត្រា" class="w-full bg-slate-900/60 text-white pl-10 pr-4 py-3 rounded-xl border border-slate-700/60 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-medium text-sm placeholder-slate-500 shadow-inner">
-          </div>
-        </div>
-        
-        <div>
-          <label class="block text-xs font-semibold text-indigo-300 uppercase tracking-wider mb-1.5 ml-1">មូលហេតុ / ភារកិច្ច</label>
-          <div class="relative">
-            <span class="absolute top-3 left-3.5 text-slate-400"><i class="fa-solid fa-pen-nib text-xs"></i></span>
-            <textarea id="requestReason" rows="3" placeholder="សរសេរមូលហេតុរបស់អ្នកនៅទីនេះ..." class="w-full bg-slate-900/60 text-white pl-10 pr-4 py-3 rounded-xl border border-slate-700/60 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-medium text-sm placeholder-slate-500 resize-none shadow-inner"></textarea>
-          </div>
-        </div>
-        
-        <button onclick="submitRequestToTelegram()" class="w-full mt-2 py-3.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:opacity-95 text-white font-bold rounded-xl shadow-lg shadow-purple-500/20 active:scale-95 transition-all text-sm tracking-wide flex items-center justify-center gap-2">
-          <i class="fa-brands fa-telegram text-lg animate-bounce" style="animation-duration: 2s"></i> ផ្ញើដំណឹងទៅកាន់គ្រុបថ្នាក់ភ្លាមៗ
+      <div class="relative mb-3">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+          <i class="fa-solid fa-key text-xs"></i>
+        </span>
+        <input type="password" id="studentPassword" placeholder="បញ្ចូលលេខសម្ងាត់ថ្នាក់" class="w-full bg-slate-900/60 text-white pl-10 pr-10 py-3.5 rounded-xl border border-slate-700 focus:outline-none focus:border-indigo-500 text-center tracking-widest font-bold">
+        <button onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-indigo-400 transition-colors">
+          <i id="eyeIcon" class="fa-solid fa-eye text-xs"></i>
         </button>
       </div>
+
+      <div class="text-right mb-6">
+        <a href="https://t.me/Pheaktra_BR" target="_blank" class="text-[11px] text-indigo-400 hover:text-indigo-300 transition-colors hover:underline">
+          <i class="fa-solid fa-circle-info mr-0.5"></i> ភ្លេចពាក្យសម្ងាត់? ទាក់ទងទៅកាន់ Admin
+        </a>
+      </div>
+      
+      <button onclick="checkStudentLogin()" class="w-full py-3.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-bold rounded-xl shadow-lg hover:opacity-95 transition-all active:scale-95">
+        ចូលប្រើប្រាស់គេហទំព័រ
+      </button>
     </div>
   </div>
 
-  <main class="max-w-4xl mx-auto w-full my-8 md:my-12 px-2">
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+  <div id="mainApp" class="w-full flex flex-col justify-between flex-1 hidden">
+    <header class="text-center max-w-3xl mx-auto mt-8 mb-4 space-y-4">
+      <div class="relative inline-block group">
+        <div class="absolute inset-0 bg-indigo-500 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition duration-500"></div>
+        <img src="https://www.rupp.edu.kh/assets/logo.svg" class="w-20 md:w-24 mx-auto relative drop-shadow-2xl transition-transform duration-500 group-hover:rotate-6" alt="RUPP Logo">
+      </div>
       
-      <a href="home.html" class="premium-glass p-6 rounded-2xl flex items-center gap-5 group relative overflow-hidden">
-        <div class="absolute -right-6 -bottom-6 text-white/5 text-7xl font-bold group-hover:scale-125 transition duration-500"><i class="fa-solid fa-square-poll-horizontal"></i></div>
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-400 via-orange-500 to-red-500 flex items-center justify-center text-white text-2xl shadow-lg shadow-orange-500/30 ring-4 ring-orange-500/10">
-          <i class="fa-solid fa-square-poll-horizontal"></i>
+      <div class="space-y-1">
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-indigo-200">
+          ប្រព័ន្ធគ្រប់គ្រងថ្នាក់រៀន <span class="gradient-text">ITE A3</span>
+        </h1>
+        <div class="flex items-center justify-center gap-3">
+          <p class="text-[11px] md:text-xs tracking-widest text-indigo-300 font-medium uppercase bg-indigo-950/40 px-3 py-1 rounded-full border border-indigo-500/10 backdrop-blur-md">
+            ⚡ INFORMATION TECHNOLOGY & ENGINEERING • RUPP
+          </p>
+          <button onclick="studentLogout()" class="text-xs bg-red-500/10 text-red-400 border border-red-500/20 px-3 py-1 rounded-full hover:bg-red-500/20 transition-all flex items-center gap-1">
+            <i class="fa-solid fa-power-off text-[10px]"></i> ចាកចេញ
+          </button>
         </div>
-        <div class="flex-1 z-10">
-          <h3 class="text-lg font-bold group-hover:text-amber-400 transition-colors duration-300 flex items-center gap-1.5">
-            វេនយកស្លាយប្រចាំថ្ងៃ <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-0 group-hover:opacity-100 transition-all"></i>
-          </h3>
-          <p class="text-xs text-slate-400 mt-1 leading-relaxed">ពិនិត្យមើលអ្នកត្រូវវេន បញ្ជាក់ការយក និងប្រព័ន្ធ AI ដូរវេន</p>
-        </div>
-      </a>
+      </div>
+      <div class="w-32 h-1.5 shimmer-line mx-auto rounded-full shadow-lg shadow-indigo-500/20"></div>
+    </header>
 
-      <button onclick="openRequestModal('leave')" class="premium-glass p-6 rounded-2xl flex items-center gap-5 group text-left w-full relative overflow-hidden">
-        <div class="absolute -right-6 -bottom-6 text-white/5 text-7xl font-bold group-hover:scale-125 transition duration-500"><i class="fa-solid fa-file-signature"></i></div>
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-pink-500 via-red-500 to-rose-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-red-500/30 ring-4 ring-red-500/10">
-          <i class="fa-solid fa-file-signature"></i>
-        </div>
-        <div class="flex-1 z-10">
-          <h3 class="text-lg font-bold group-hover:text-red-400 transition-colors duration-300">ប្រព័ន្ធសុំច្បាប់ (Absent)</h3>
-          <p class="text-xs text-slate-400 mt-1 leading-relaxed">ផ្ញើលិខិតសុំច្បាប់ឈប់សម្រាកដោយមានធុរៈ ឬឈឺ ទៅកាន់គ្រុបថ្នាក់</p>
-        </div>
-      </button>
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-3 max-w-sm w-full pointer-events-none"></div>
 
-      <button onclick="openRequestModal('late')" class="premium-glass p-6 rounded-2xl flex items-center gap-5 group text-left w-full relative overflow-hidden">
-        <div class="absolute -right-6 -bottom-6 text-white/5 text-7xl font-bold group-hover:scale-125 transition duration-500"><i class="fa-regular fa-clock"></i></div>
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-400 via-sky-500 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-sky-500/30 ring-4 ring-sky-500/10">
-          <i class="fa-regular fa-clock"></i>
+    <div id="requestModal" class="fixed inset-0 z-50 items-center justify-center p-4 bg-slate-950/75 backdrop-blur-xl hidden transition-opacity duration-300">
+      <div class="premium-glass max-w-md w-full p-6 md:p-8 rounded-3xl shadow-2xl border border-white/10 animate-modal relative">
+        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition duration-200 active:scale-90">
+          <i class="fa-solid fa-circle-xmark text-2xl"></i>
+        </button>
+        
+        <h3 id="modalTitle" class="text-xl md:text-2xl font-bold text-white tracking-tight">---</h3>
+        <p id="modalDesc" class="text-xs text-slate-400 mt-1 mb-6">---</p>
+        
+        <div class="space-y-4 text-left text-sm">
+          <div class="relative">
+            <label class="block text-xs font-semibold text-indigo-300 uppercase tracking-wider mb-1.5 ml-1">ឈ្មោះនិស្សិត</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fa-solid fa-user text-xs"></i></span>
+              <input type="text" id="studentName" placeholder="ឧទាហរណ៍៖ បារាំង ភក្ត្រា" class="w-full bg-slate-900/60 text-white pl-10 pr-4 py-3 rounded-xl border border-slate-700/60 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-medium text-sm placeholder-slate-500 shadow-inner">
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-xs font-semibold text-indigo-300 uppercase tracking-wider mb-1.5 ml-1">មូលហេតុ / ភារកិច្ច</label>
+            <div class="relative">
+              <span class="absolute top-3 left-3.5 text-slate-400"><i class="fa-solid fa-pen-nib text-xs"></i></span>
+              <textarea id="requestReason" rows="3" placeholder="សរសេរមូលហេតុរបស់អ្នកនៅទីនេះ..." class="w-full bg-slate-900/60 text-white pl-10 pr-4 py-3 rounded-xl border border-slate-700/60 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all font-medium text-sm placeholder-slate-500 resize-none shadow-inner"></textarea>
+            </div>
+          </div>
+          
+          <button onclick="submitRequestToTelegram()" class="w-full mt-2 py-3.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:opacity-95 text-white font-bold rounded-xl shadow-lg shadow-purple-500/20 active:scale-95 transition-all text-sm tracking-wide flex items-center justify-center gap-2">
+            <i class="fa-brands fa-telegram text-lg animate-bounce" style="animation-duration: 2s"></i> ផ្ញើដំណឹងទៅកាន់គ្រុបថ្នាក់ភ្លាមៗ
+          </button>
         </div>
-        <div class="flex-1 z-10">
-          <h3 class="text-lg font-bold group-hover:text-sky-400 transition-colors duration-300">ប្រព័ន្ធសុំយឺត (Late)</h3>
-          <p class="text-xs text-slate-400 mt-1 leading-relaxed">ជូនដំណឹងជាមុនក្នុងករណីមានធុរៈរវល់ ឬស្ទះចរាចរណ៍មកមិនទាន់ម៉ោង</p>
-        </div>
-      </button>
-
-      <a href="https://t.me/+nLE3Q8E6MN41NGM1" target="_blank" class="premium-glass p-6 rounded-2xl flex items-center gap-5 group relative overflow-hidden">
-        <div class="absolute -right-6 -bottom-6 text-white/5 text-7xl font-bold group-hover:scale-125 transition duration-500"><i class="fa-brands fa-telegram"></i></div>
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-500 via-sky-400 to-teal-400 flex items-center justify-center text-white text-2xl shadow-lg shadow-sky-500/30 ring-4 ring-sky-500/10">
-          <i class="fa-brands fa-telegram text-2xl"></i>
-        </div>
-        <div class="flex-1 z-10">
-          <h3 class="text-lg font-bold group-hover:text-sky-300 transition-colors duration-300 flex items-center gap-1.5">
-            ក្រុម Telegram ថ្នាក់ <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-0 group-hover:opacity-100 transition-all"></i>
-          </h3>
-          <p class="text-xs text-slate-400 mt-1 leading-relaxed">ចូលទៅកាន់សហគមន៍ និងការពិភាក្សាផ្លូវការរបស់ ITE A3</p>
-        </div>
-      </a>
-
+      </div>
     </div>
-  </main>
 
-  <footer class="w-full text-center py-5 text-xs text-slate-500 border-t border-white/5 bg-slate-950/20 backdrop-blur-md">
-    <p class="font-medium">👨‍💻 Core Architecture Developed with ❤️ for <span class="text-indigo-400 font-semibold">ITE A3 Community</span></p>
-  </footer>
+    <main class="max-w-4xl mx-auto w-full my-8 md:my-12 px-2">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        
+        <a href="home.html" class="premium-glass p-6 rounded-2xl flex items-center gap-5 group relative overflow-hidden">
+          <div class="absolute -right-6 -bottom-6 text-white/5 text-7xl font-bold group-hover:scale-125 transition duration-500"><i class="fa-solid fa-square-poll-horizontal"></i></div>
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-400 via-orange-500 to-red-500 flex items-center justify-center text-white text-2xl shadow-lg shadow-orange-500/30 ring-4 ring-orange-500/10">
+            <i class="fa-solid fa-square-poll-horizontal"></i>
+          </div>
+          <div class="flex-1 z-10">
+            <h3 class="text-lg font-bold group-hover:text-amber-400 transition-colors duration-300 flex items-center gap-1.5">
+              វេនយកស្លាយប្រចាំថ្ងៃ <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-0 group-hover:opacity-100 transition-all"></i>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">ពិនិត្យមើលអ្នកត្រូវវេន បញ្ជាក់ការយក និងប្រព័ន្ធ AI ដូរវេន</p>
+          </div>
+        </a>
+
+        <button onclick="openRequestModal('leave')" class="premium-glass p-6 rounded-2xl flex items-center gap-5 group text-left w-full relative overflow-hidden">
+          <div class="absolute -right-6 -bottom-6 text-white/5 text-7xl font-bold group-hover:scale-125 transition duration-500"><i class="fa-solid fa-file-signature"></i></div>
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-pink-500 via-red-500 to-rose-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-red-500/30 ring-4 ring-red-500/10">
+            <i class="fa-solid fa-file-signature"></i>
+          </div>
+          <div class="flex-1 z-10">
+            <h3 class="text-lg font-bold group-hover:text-red-400 transition-colors duration-300">ប្រព័ន្ធសុំច្បាប់ (Absent)</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">ផ្ញើលិខិតសុំច្បាប់ឈប់សម្រាកដោយមានធុរៈ ឬឈឺ ទៅកាន់គ្រុបថ្នាក់</p>
+          </div>
+        </button>
+
+        <button onclick="openRequestModal('late')" class="premium-glass p-6 rounded-2xl flex items-center gap-5 group text-left w-full relative overflow-hidden">
+          <div class="absolute -right-6 -bottom-6 text-white/5 text-7xl font-bold group-hover:scale-125 transition duration-500"><i class="fa-regular fa-clock"></i></div>
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-400 via-sky-500 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-sky-500/30 ring-4 ring-sky-500/10">
+            <i class="fa-regular fa-clock"></i>
+          </div>
+          <div class="flex-1 z-10">
+            <h3 class="text-lg font-bold group-hover:text-sky-400 transition-colors duration-300">ប្រព័ន្ធសុំយឺត (Late)</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">ជូនដំណឹងជាមុនក្នុងករណីមានធុរៈរវល់ ឬស្ទះចរាចរណ៍មកមិនទាន់ម៉ោង</p>
+          </div>
+        </button>
+
+        <a href="https://t.me/+nLE3Q8E6MN41NGM1" target="_blank" class="premium-glass p-6 rounded-2xl flex items-center gap-5 group relative overflow-hidden">
+          <div class="absolute -right-6 -bottom-6 text-white/5 text-7xl font-bold group-hover:scale-125 transition duration-500"><i class="fa-brands fa-telegram"></i></div>
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-500 via-sky-400 to-teal-400 flex items-center justify-center text-white text-2xl shadow-lg shadow-sky-500/30 ring-4 ring-sky-500/10">
+            <i class="fa-brands fa-telegram text-2xl"></i>
+          </div>
+          <div class="flex-1 z-10">
+            <h3 class="text-lg font-bold group-hover:text-sky-300 transition-colors duration-300 flex items-center gap-1.5">
+              ក្រុម Telegram ថ្នាក់ <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-0 group-hover:opacity-100 transition-all"></i>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">ចូលទៅកាន់សហគមន៍ និងការពិភាក្សាផ្លូវការរបស់ ITE A3</p>
+          </div>
+        </a>
+
+      </div>
+    </main>
+
+    <footer class="w-full text-center py-5 text-xs text-slate-500 border-t border-white/5 bg-slate-950/20 backdrop-blur-md">
+      <p class="font-medium">👨‍💻 Core Architecture Developed with ❤️ for <span class="text-indigo-400 font-semibold">ITE A3 Community</span></p>
+    </footer>
+  </div>
 
 <script>
-const TELEGRAM_CONFIG = {
-  token: '8880912035:AAHyuxH72-wBdJ1W77bI5r61Y4HDt-Md1H8',
-  chatId: '-1003502505377',
-  apiUrl: 'https://api.telegram.org/bot'
-};
-
+const ACCESS_PASSWORD = "A3class"; 
 let currentFormType = ""; 
+
+// 👁️ មុខងារចុចបើក/បិទភ្នែកមើល Password
+function togglePasswordVisibility() {
+  const passwordInput = document.getElementById('studentPassword');
+  const eyeIcon = document.getElementById('eyeIcon');
+  
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    eyeIcon.classList.remove('fa-eye');
+    eyeIcon.classList.add('fa-eye-slash');
+    eyeIcon.classList.add('text-indigo-400');
+  } else {
+    passwordInput.type = 'password';
+    eyeIcon.classList.remove('fa-eye-slash');
+    eyeIcon.classList.add('fa-eye');
+    eyeIcon.classList.remove('text-indigo-400');
+  }
+}
+
+// 🔒 មុខងារពិនិត្យ និងចងចាំការ Login របស់និស្សិតជារហូត (Stay Logged In)
+function checkStudentLogin() {
+  const inputPass = document.getElementById('studentPassword').value;
+  if(inputPass === ACCESS_PASSWORD) {
+    localStorage.setItem("ite_student_authenticated", "true");
+    showApp();
+    showToast("ផ្ទៀងផ្ទាត់ជោគជ័យ! ស្វាគមន៍មកកាន់ ITE A3", "success");
+  } else {
+    showToast("លេខសម្ងាត់ថ្នាក់មិនត្រឹមត្រូវទេ សូមសួរប្រធានថ្នាក់!", "error");
+  }
+}
+
+function studentLogout() {
+  localStorage.removeItem("ite_student_authenticated");
+  location.reload();
+}
+
+function showApp() {
+  document.getElementById('loginModal').classList.add('hidden');
+  document.getElementById('loginModal').classList.remove('flex');
+  document.getElementById('mainApp').classList.remove('hidden');
+}
+
+// ពិនិត្យស្ថានភាព Login រាល់ពេលនិស្សិតបើក Website ឡើងវិញ
+window.onload = () => {
+  if (localStorage.getItem("ite_student_authenticated") === "true") {
+    showApp();
+  } else {
+    document.getElementById('loginModal').classList.remove('hidden');
+    document.getElementById('loginModal').classList.add('flex');
+  }
+};
 
 function openRequestModal(type) {
   currentFormType = type;
@@ -239,12 +326,11 @@ function closeModal() {
   modal.classList.add('hidden');
 }
 
-// 🔔 Premium Native Toast System
 function showToast(message, type = "success") {
   const container = document.getElementById('toastContainer');
   const toast = document.createElement('div');
   
-  toast.className = `p-4 rounded-2xl border backdrop-blur-xl shadow-2xl flex items-center gap-3 pointer-events-auto transition-all duration-300 opacity-0 transform translate-y-2 pointer-events-none`;
+  toast.className = `p-4 rounded-2xl border backdrop-blur-xl shadow-2xl flex items-center gap-3 pointer-events-auto transition-all duration-300 opacity-0 transform translate-y-2`;
   
   if (type === "success") {
     toast.classList.add('bg-emerald-950/80', 'border-emerald-500/30', 'text-emerald-200');
@@ -268,6 +354,7 @@ function showToast(message, type = "success") {
   }, 4000);
 }
 
+// 🚀 មុខងារផ្ញើទៅកាន់ Make.com Webhook (លាក់ Bot Token ១០០%)
 function submitRequestToTelegram() {
   const name = document.getElementById('studentName').value.trim();
   const reason = document.getElementById('requestReason').value.trim();
@@ -277,39 +364,54 @@ function submitRequestToTelegram() {
     return;
   }
   
-  let typeTitle = currentFormType === 'leave' ? "📝 [ពាក្យសុំច្បាប់សម្រាក]" : "⏳ [ការជូនដំណឹងមកយឺត]";
-  let statusEmoji = currentFormType === 'leave' ? "❌ អវត្តមានដោយមានច្បាប់" : "⚠️ មកយឺត (មានធុរៈ)";
-  
-  let now = new Date();
-  let dateStr = now.toLocaleDateString('kh-KH', { day: 'numeric', month: 'long', year: 'numeric' });
-  let timeStr = now.toLocaleTimeString('kh-KH', { hour: '2-digit', minute: '2-digit' });
+  // 🔗 Link Custom Webhook របស់ Make.com ដែលអ្នកបានបង្កើត
+  const MAKE_WEBHOOK_URL = "https://hook.us2.make.com/o6mi8kcjo7iqhvn2wa3eunscyol3weqv"; 
 
-  let textMessage = `🔔 <b>${typeTitle}</b>\n\n`;
-  textMessage += `👤 និស្សិត៖ <b>${name}</b>\n`;
-  textMessage += `🎯 ស្ថានភាព៖ <b>${statusEmoji}</b>\n`;
-  textMessage += `ℹ️ មូលហេតុ៖ "${reason}"\n\n`;
-  textMessage += `📅 កាលបរិច្ឆេទ៖ ថ្ងៃទី ${dateStr}\n`;
-  textMessage += `⏰ ម៉ោងផ្ញើ៖ ម៉ោង ${timeStr}`;
+  // ប្តូរប្រភេទពាក្យជាភាសាខ្មែរឱ្យ Make.com ងាយស្រួលចាប់យកទៅបង្ហាញ
+  let typeTitle = currentFormType === 'leave' ? "📝 ពាក្យសុំច្បាប់សម្រាក (Absent)" : "⏳ ការជូនដំណឹងមកយឺត (Late)";
 
-  const url = `${TELEGRAM_CONFIG.apiUrl}${TELEGRAM_CONFIG.token}/sendMessage`;
+  // រៀបចំកញ្ចប់ទិន្នន័យទម្រង់ JSON ដើម្បីបាញ់ទៅ Make.com
+  const dataToSend = {
+    student_name: name,
+    request_type: typeTitle,
+    request_reason: reason
+  };
   
-  fetch(url, {
+  fetch(MAKE_WEBHOOK_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: TELEGRAM_CONFIG.chatId, text: textMessage, parse_mode: 'HTML' })
+    body: JSON.stringify(dataToSend)
   })
   .then(res => {
     if(res.ok) {
-      showToast("🚀 បានបញ្ជូនព័ត៌មានទៅកាន់ Telegram ថ្នាក់រៀនរួចរាល់ហើយ!", "success");
+      showToast("🚀 បានបញ្ជូនព័ត៌មានទៅកាន់ប្រព័ន្ធរួចរាល់ហើយ!", "success");
       closeModal();
     } else {
-      showToast("❌ មានបញ្ហាក្នុងការផ្ញើ! សូមព្យាយាមម្តងទៀត។", "error");
+      showToast("❌ មានបញ្ហាក្នុងការផ្ញើទៅកាន់ប្រព័ន្ធ backend!", "error");
     }
   })
   .catch(err => {
     console.error(err);
     showToast("❌ មិនអាចភ្ជាប់ទៅកាន់ប្រព័ន្ធបានទេ!", "error");
   });
+}
+
+// ១. បិទការចុច Right-Click (ម៉ៅស្តាំ)
+document.addEventListener('contextmenu', event => event.preventDefault());
+
+// ២. បិទ Shortcut Keys សំខាន់ៗ (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
+document.onkeydown = function(e) {
+  if (e.keyCode == 123) { // F12
+    return false;
+  }
+  if (e.ctrlKey && e.shiftKey) {
+    if (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0)) { // Ctrl+Shift+I ឬ J
+      return false;
+    }
+  }
+  if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { // Ctrl+U (មើល View Source)
+    return false;
+  }
 }
 </script>
 </body>
